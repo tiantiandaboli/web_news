@@ -74,7 +74,7 @@ class CpcnewsSpider(CrawlSpider):
             loader.add_value('date', response.xpath('//p[@class="sou"]/text()').extract_first())
             loader.add_value('date', response.xpath('//span[@id="p_publishtime"]/text()').extract_first())
             date = ''.join(loader.get_collected_values('date'))
-            date = time.strptime(date.split()[0], '%Y年%m月%d日%H:%M')
+            date = time.strptime(date.split()[0], u'%Y年%m月%d日%H:%M')
             loader.replace_value('date', time.strftime('%Y-%m-%d %H:%M:%S', date))
 
             loader.add_value('content', ''.join(response.xpath('//div[@class="text_c"]/descendant-or-self::text()').extract()))
