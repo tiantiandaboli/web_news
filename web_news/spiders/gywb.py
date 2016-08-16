@@ -20,13 +20,12 @@ class GywbSpider(CrawlSpider):
         Rule(LinkExtractor(allow=r'content_'), callback='parse_item', follow=True),
         # 匹配党政
         Rule(LinkExtractor(allow=r'/gov/'), follow=True),
-       # Rule(LinkExtractor(allow=r'/xinwen/'), follow=True),
-       # Rule(LinkExtractor(allow=r'/index_gl/'), follow=True),
-       # Rule(LinkExtractor(allow=r'/gynews/'), follow=True),
-       Rule(LinkExtractor(allow=r'/dangshi/'), follow=True),
-       # Rule(LinkExtractor(allow=r'/lm_zwfb/'), follow=True),
-        # Rule(LinkExtractor(allow=r'/gov/'), follow=True),
-
+#        Rule(LinkExtractor(allow=r'/xinwen/'), follow=True),
+#        Rule(LinkExtractor(allow=r'/index_gl/'), follow=True),
+#        Rule(LinkExtractor(allow=r'/gynews/'), follow=True),
+#        Rule(LinkExtractor(allow=r'/dangshi/'), follow=True),
+#        Rule(LinkExtractor(allow=r'/lm_zwfb/'), follow=True),
+#         Rule(LinkExtractor(allow=r'/gov/'), follow=True),
     )
 
     @classmethod
