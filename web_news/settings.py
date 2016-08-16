@@ -36,6 +36,7 @@ CONCURRENT_REQUESTS_PER_IP = 32
 COOKIES_ENABLED = True
 
 REDIRECT_ENABLED = False
+METAREFRESH_ENABLED = False
 # Disable Telnet Console (enabled by default)
 TELNETCONSOLE_ENABLED = True
 
@@ -76,7 +77,7 @@ SCHEDULER_MEMORY_QUEUE = 'scrapy.squeues.FifoMemoryQueue'
 
 LOG_FILE = 'scrapy.log'
 
-LOG_LEVEL = 'INFO'
+LOG_LEVEL = 'DEBUG'
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
