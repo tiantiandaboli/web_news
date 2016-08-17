@@ -75,9 +75,9 @@ DEPTH_PRIORITY = 1
 SCHEDULER_DISK_QUEUE = 'scrapy.squeues.PickleFifoDiskQueue'
 SCHEDULER_MEMORY_QUEUE = 'scrapy.squeues.FifoMemoryQueue'
 
-LOG_FILE = 'scrapy.log'
+# LOG_FILE = 'scrapy.log'
 
-LOG_LEVEL = 'INFO'
+LOG_LEVEL = 'DEBUG'
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
@@ -108,3 +108,9 @@ MONGO_IP = '192.168.1.54'
 MONGO_PORT = 27017
 
 COMMANDS_MODULE = 'web_news.commands'
+
+########################
+DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
+SCHEDULER = "scrapy_redis.scheduler.Scheduler"
+SCHEDULER_PERSIST = True
+SCHEDULER_QUEUE_CLASS = "scrapy_redis.queue.SpiderQueue"
