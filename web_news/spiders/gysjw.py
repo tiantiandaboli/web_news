@@ -17,7 +17,7 @@ class GysjwSpider(CrawlSpider):
     website = u'中共贵阳市纪律检查委员会、贵阳市监察局'
     rules = (
         Rule(LinkExtractor(allow=r'content_'), callback='parse_item', follow=True),
-        Rule(LinkExtractor(allow=r'node_'), follow=True),
+        Rule(LinkExtractor(allow=r'node_'), callback='_requests_to_follow', follow=True),
     )
 
     @classmethod
