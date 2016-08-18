@@ -57,14 +57,25 @@ class BjnewsSpider(CrawlSpider):
 
     def parse_item(self, response):
         l = ItemLoader(item=SpiderItem(), response=response)
-        inspect_response(response, self);
         try:
-
+            l.add_value('title', response.xpath('//title/text()').extract_first())
+            datep = r'\d+-\d+-\d+\s+\d+:\d+:\d+'
+            l.add_value('date', response.xpath('//div[@class="nitit_span"]/span[@id="pubtime_baidu"]/descendant-or-self::text()').re(datep)[0])
+            l.add_value('source', ''.join(response.xpath('//div[@class="nitit_span"]/span[@id="source_baidu"]/descendant-or-self::text()').extract()))
+            l.add_value('content', ''.join(response.xpath('//div[@class="content"]/descendant-or-self::text()').extract()))
             pass
         except Exception as e:
-
+            self.logger.error('error url: %s error msg: %s' % (response.url, e))
+            l = ItemLoader(item=SpiderItem(), response=response)
+            l.add_value('title', '');
+            l.add_value('date', '1970-01-01 00:00:00')
+            l.add_value('source', '')
+            l.add_value('content', '')
             pass
         finally:
+            l.add_value('url', response.url)
+            l.add_value('collection_name', self.name)
+            l.add_value('website', self.website)
             return l.load_item()
-            pass
+
 
