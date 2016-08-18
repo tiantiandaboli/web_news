@@ -28,11 +28,6 @@ class BjnewsSpider(CrawlSpider):
         Rule(LinkExtractor(allow=r'news/?page=(\d+)'), follow=True),
     )
 
-    # comepte for the master
-    def __init__(self, *a, **kw):
-        super(BjnewsSpider, self).__init__(*a, **kw)
-        self.compete_key()
-
     def compete_key(self):
         self.server = get_redis_from_settings(self.settings)
         self.redis_compete = self.settings.get('REDIS_COMPETE')%{'spider':self.name}
@@ -66,6 +61,7 @@ class BjnewsSpider(CrawlSpider):
     def from_crawler(cls, crawler, *args, **kwargs):
         spider = super(BjnewsSpider, cls).from_crawler(crawler, *args, **kwargs)
         spider.filter = Filter.from_crawler(spider.crawler, spider.name)
+        spider.compete_key()
         return spider
 
     def _requests_to_follow(self, response):
