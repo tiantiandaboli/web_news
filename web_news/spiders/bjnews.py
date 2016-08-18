@@ -67,4 +67,4 @@ class BjnewsSpider(CrawlSpider):
         finally:
             return l.load_item()
             pass
-        pass
+
