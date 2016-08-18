@@ -25,7 +25,7 @@ class SpiderRedis(CrawlSpider):
         if spider.key == 1:
             t = 0
             while t < cnt:
-                spider.logger.info("wait %s spiders to stop" % (cnt - 1))
+                spider.logger.info("wait %s spiders to stop" % (cnt-t))
                 spider.server.brpop(spider.redis_wait, 10)
                 t = t + 1
                 cnt = spider.server.scard(spider.redis_compete)
