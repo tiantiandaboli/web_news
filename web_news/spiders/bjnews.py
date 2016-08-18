@@ -54,7 +54,7 @@ class BjnewsSpider(CrawlSpider):
             spider.server.delete(spider.redis_wait)
             spider.server.delete('%(spider)s:dupefilter'%{'spider':spider.name})
 
-        super(BjnewsSpider, reason).close()
+        # super(BjnewsSpider, reason).close()
 
     @classmethod
     def from_crawler(cls, crawler, *args, **kwargs):
