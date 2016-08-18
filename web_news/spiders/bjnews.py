@@ -47,7 +47,7 @@ class BjnewsSpider(CrawlSpider):
             t = 0
             while t < cnt:
                 spider.logger.info("wait %s spiders to stop" % (cnt - 1))
-                json.loads(spider.server.brpop(spider.redis_compete, 10))
+                json.loads(spider.server.brpop(spider.redis_wait, 10))
                 t = t+1
             spider.logger.info("all slave spider exit")
             spider.server.delete(spider.redis_compete)
