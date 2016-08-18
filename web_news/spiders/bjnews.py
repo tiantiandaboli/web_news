@@ -10,6 +10,7 @@ from web_news.items import SpiderItem
 from web_news.misc.filter import Filter
 
 from scrapy.shell import  inspect_response
+import  re
 
 class BjnewsSpider(CrawlSpider):
     name = 'bjnews'
@@ -60,8 +61,15 @@ class BjnewsSpider(CrawlSpider):
         try:
             l.add_value('title', response.xpath('//title/text()').extract_first())
             datep = r'\d+-\d+-\d+\s+\d+:\d+:\d+'
-            l.add_value('date', response.xpath('//span[@id="pubtime_baidu"]/descendant-or-self::text()').re(datep)[0])
-            l.add_value('source', ''.join(response.xpath('//span[@id="source_baidu"]/descendant-or-self::text()').extract()))
+            if(len(datep)>0):
+                l.add_value('date', response.xpath('//span[@id="pubtime_baidu"]/descendant-or-self::text()').re(datep)[0])
+                l.add_value('source', ''.join(response.xpath('//span[@id="source_baidu"]/descendant-or-self::text()').extract()))
+            else:
+                dateandsource = ''.join(response.xpath('//dl[@class="ctdate"]/descendant-or-self::text()').extract())
+                l.add_value('date', re.search(datep, dateandsource).group())
+                source = re.sub(datep, '', dateandsource)
+                source = [s for s in source.strip()]
+                l.add_value('source', ''.join(source))
             l.add_value('content', ''.join(response.xpath('//div[@class="content"]/descendant-or-self::text()').extract()))
             pass
         except Exception as e:
