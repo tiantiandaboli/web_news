@@ -16,7 +16,7 @@ class BjnewsSpider(CrawlSpider):
     name = 'bjnews'
     website = u'新京报网'
     allowed_domains = ['www.bjnews.com.cn']
-    start_urls = ['http://www.bjnews.com.cn/news/']
+    start_urls = ['http://www.bjnews.com.cn/news/', 'http://www.bjnews.com.cn/news/list-43-page-1.html']
 
     rules = (
         Rule(LinkExtractor(allow=r'news/(\d+){4}/(\d+){2}/(\d+){2}/(\d+)'), callback='parse_item', follow=True),
