@@ -49,11 +49,10 @@ class BjnewsSpider(CrawlSpider):
                 spider.logger.info("wait %s spiders to stop" % (cnt - 1))
                 json.loads(spider.server.brpop(spider.redis_compete, 10))
                 t = t+1
-        spider.logger.info("all slave spider exit")
-        spider.server.delete(spider.redis_compete)
-        spider.server.delete(spider.redis_wait)
-        spider.server.delete('%(spider)s:dupefilter'%{'spider':spider.name})
-        spider.server.delete()
+            spider.logger.info("all slave spider exit")
+            spider.server.delete(spider.redis_compete)
+            spider.server.delete(spider.redis_wait)
+            spider.server.delete('%(spider)s:dupefilter'%{'spider':spider.name})
 
         super(BjnewsSpider, reason).close()
 
