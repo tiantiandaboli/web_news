@@ -61,7 +61,8 @@ class BjnewsSpider(CrawlSpider):
         try:
             l.add_value('title', response.xpath('//title/text()').extract_first())
             datep = r'\d+-\d+-\d+\s+\d+:\d+:\d+'
-            if(len(datep)>0):
+            date = response.xpath('//span[@id="pubtime_baidu"]/descendant-or-self::text()').re(datep)
+            if(len(date)>0):
                 l.add_value('date', response.xpath('//span[@id="pubtime_baidu"]/descendant-or-self::text()').re(datep)[0])
                 l.add_value('source', ''.join(response.xpath('//span[@id="source_baidu"]/descendant-or-self::text()').extract()))
             else:
