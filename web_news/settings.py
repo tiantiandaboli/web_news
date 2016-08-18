@@ -77,7 +77,7 @@ ITEM_PIPELINES = {
 
 # LOG_FILE = 'scrapy.log'
 
-LOG_LEVEL = 'DEBUG'
+LOG_LEVEL = 'INFO'
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
@@ -114,3 +114,4 @@ DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
 SCHEDULER = "scrapy_redis.scheduler.Scheduler"
 SCHEDULER_PERSIST = True
 SCHEDULER_QUEUE_CLASS = "scrapy_redis.queue.SpiderQueue"
+REDIS_HOST = '192.168.1.54'
