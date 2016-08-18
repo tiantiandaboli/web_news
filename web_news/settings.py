@@ -109,9 +109,14 @@ MONGO_PORT = 27017
 
 COMMANDS_MODULE = 'web_news.commands'
 
-########################
+# scrapy-redis config
 DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
 SCHEDULER = "scrapy_redis.scheduler.Scheduler"
 SCHEDULER_PERSIST = True
 SCHEDULER_QUEUE_CLASS = "scrapy_redis.queue.SpiderQueue"
 REDIS_HOST = '192.168.1.54'
+
+# distribution for increment
+
+REDIS_COMPETE = '%(spider)s:compete'
+REDIS_WAIT = '%(spider)s:wait'

@@ -12,6 +12,10 @@ from web_news.misc.filter import Filter
 from scrapy.shell import  inspect_response
 import  re
 
+from scrapy_redis.connection import get_redis_from_settings
+import json
+
+
 class BjnewsSpider(CrawlSpider):
     name = 'bjnews'
     website = u'新京报网'
@@ -23,6 +27,40 @@ class BjnewsSpider(CrawlSpider):
         Rule(LinkExtractor(allow=r'news/list-43-page-(\d+)'), follow=True),
         Rule(LinkExtractor(allow=r'news/?page=(\d+)'), follow=True),
     )
+
+    # comepte for the master
+    def __init__(self, *a, **kw):
+        super(BjnewsSpider, self).__init__(*a, **kw)
+        self.compete_key()
+
+    def compete_key(self):
+        self.server = get_redis_from_settings(self.settings)
+        self.redis_compete = self.settings.get('REDIS_COMPETE')%{'spider':self.name}
+        self.redis_wait = self.settings.get('REDIS_WAIT')%{'spider':self.name}
+        self.key = 1
+        # self.server.sadd(self.key, fp)
+        while self.server.sadd(self.redis_compete, self.key)==0:
+            self.key = self.key+1
+        self.logger.info("get key %s"%self.key)
+
+    @staticmethod
+    def close(spider, reason):
+        # before close spider
+        spider.server.lpush(spider.redis_wait, json.dumps(spider.key))
+        cnt = spider.server.scard(spider.redis_compete)
+        if spider.key == 1:
+            t = 0
+            while t < cnt:
+                spider.logger.info("wait %s spiders to stop" % (cnt - 1))
+                json.loads(spider.server.brpop(spider.redis_compete, 10))
+                t = t+1
+        spider.logger.info("all slave spider exit")
+        spider.server.delete(spider.redis_compete)
+        spider.server.delete(spider.redis_wait)
+        spider.server.delete('%(spider)s:dupefilter'%{'spider':spider.name})
+        spider.server.delete()
+
+        super(BjnewsSpider, reason).close()
 
     @classmethod
     def from_crawler(cls, crawler, *args, **kwargs):
@@ -79,6 +117,7 @@ class BjnewsSpider(CrawlSpider):
             l.add_value('content', ''.join(response.xpath('//div[@class="content"]/descendant-or-self::text()').extract()))
             pass
         except Exception as e:
+            inspect_response(response, self)
             self.logger.error('error url: %s error msg: %s' % (response.url, e))
             l = ItemLoader(item=SpiderItem(), response=response)
             l.add_value('title', '');
