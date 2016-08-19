@@ -21,7 +21,7 @@ class BjdSpider(SpiderRedis):
         l = ItemLoader(item=SpiderItem(), response=response)
         try:
             date_source_author = response.xpath('//div[@class="info"]/span/text()').extract()
-            l.add_value('title', response.xpath('//title/text()').extract_first())
+            l.add_value('title', response.xpath('//title/text()').extract_first() or '')
             l.add_value('date', date_source_author[0] if len(date_source_author)>0 else '1970-01-01 00:00:00')
             l.add_value('source', date_source_author[1] if len(date_source_author)>1 else '')
             l.add_value('content', ''.join(response.xpath('//div[@class="TRS_Editor"]/descendant-or-self::text()').extract()))
