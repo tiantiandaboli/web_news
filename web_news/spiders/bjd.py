@@ -34,4 +34,7 @@ class BjdSpider(SpiderRedis):
             i['url'] = response.url
             i['collection_name'] = self.name
             i['website'] = self.website
-        return ItemLoader(item=SpiderItem(i), response=response, ).load_item()
+        l = ItemLoader(item=SpiderItem(), response=response)
+        for k, v in i.items():
+            l.add_value(k, v)
+        return l.load_item()
