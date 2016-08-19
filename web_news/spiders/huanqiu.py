@@ -8,7 +8,7 @@ import re
 class HuanqiuSpider(SpiderRedis):
     name = 'huanqiu'
     allowed_domains = ['china.huanqiu.com', 'society.huanqiu.com']
-    start_urls = ['http://china.huanqiu.com/article/2016-08/9318559.html']
+    start_urls = ['http://www.huanqiu.com/']
     website = u'环球网'
 
     rules = (
