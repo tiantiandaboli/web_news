@@ -20,7 +20,7 @@ class HuanqiuSpider(SpiderRedis):
         i = {}
         i['title'] = response.xpath('//title/text()').extract_first()
         try:
-            if response.url == 'http://www.huanqiu.com':
+            if response.url == 'http://www.huanqiu.com' or re.search(r'404', response.body) != None:
                 raise Exception('this item may be deleted')
             if response.status != 200:
                 raise Exception('response status %s'%response.status)
