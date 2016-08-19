@@ -20,6 +20,8 @@ class HuanqiuSpider(SpiderRedis):
         i = {}
         i['title'] = response.xpath('//title/text()').extract_first()
         try:
+            if response.status != 200:
+                raise Exception('response status %s'%response.status)
             i['date'] = response.xpath('//strong[@id="pubtime_baidu"]/text()').extract_first()
             i['source'] = response.xpath('//strong[@id="source_baidu"]/text()').extract_first()
             i['content'] = ''.join(response.xpath('//div[@class="text"]/descendant-or-self::text()').extract())
