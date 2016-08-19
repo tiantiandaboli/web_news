@@ -20,6 +20,8 @@ class HuanqiuSpider(SpiderRedis):
         i = {}
         i['title'] = response.xpath('//title/text()').extract_first()
         try:
+            if response.url == 'http://www.huanqiu.com':
+                raise Exception('this item may be deleted')
             if response.status != 200:
                 raise Exception('response status %s'%response.status)
             i['date'] = response.xpath('//strong[@id="pubtime_baidu"]/descendant-or-self::text()').extract_first()
