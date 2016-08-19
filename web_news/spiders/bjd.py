@@ -20,8 +20,8 @@ class BjdSpider(SpiderRedis):
         i['title'] = response.xpath('//title/text()').extract_first()
         try:
             date_source_author = response.xpath('//div[@class="info"]/span/text()').extract()
-            i['date'] = date_source_author[0]
-            i['source'] = date_source_author[1]
+            i['date'] = date_source_author[0] if len(date_source_author)>0 else '1970-01-01 00:00:00'
+            i['source'] = date_source_author[1] if len(date_source_author)>1 else ''
             i['content'] = ''.join(response.xpath('//div[@class="TRS_Editor"]/descendant-or-self::text()').extract())
         except Exception as e:
             self.logger.error('error url: %s error msg: %s' % (response.url, e))
