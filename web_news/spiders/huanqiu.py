@@ -22,12 +22,14 @@ class HuanqiuSpider(SpiderRedis):
 
     def parse_item(self, response):
         l = ItemLoader(item=SpiderItem(), response=response)
-        l.add_value('title', response.xpath('//title/text()').extract_first())
         try:
+            l.add_value('title', response.xpath('//title/text()').extract_first())
             if response.url == 'http://www.huanqiu.com' or re.search(r'/404.h', response.body) != None:
                 raise Exception('this item may be deleted')
             if response.status != 200:
                 raise Exception('response status %s'%response.status)
+            l.add_value('title', response.xpath('//title/text()').extract_first())
+
             l.add_value('date', response.xpath('//strong[@id="pubtime_baidu"]/descendant-or-self::text()').extract_first())
             l.add_value('source', response.xpath('//strong[@id="source_baidu"]/descendant-or-self::text()').extract_first())
             l.add_value('content', ''.join(response.xpath('//div[@class="text"]/descendant-or-self::p/text()').extract()))
