@@ -29,9 +29,9 @@ class HuanqiuSpider(SpiderRedis):
             i['source'] = response.xpath('//strong[@id="source_baidu"]/descendant-or-self::text()').extract_first()
             i['content'] = ''.join(response.xpath('//div[@class="text"]/descendant-or-self::text()').extract())
             # found new fomate
-            assert i['date'] != ''
-            assert i['source'] != ''
-            assert i['content'] != ''
+            assert i['date'] != '', 'date not found'
+            assert i['source'] != '', 'source not found'
+            assert i['content'] != '', 'content not found'
 
         except Exception as e:
             self.logger.error('error url: %s error msg: %s' % (response.url, e))
