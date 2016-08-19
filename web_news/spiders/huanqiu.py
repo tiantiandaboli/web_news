@@ -5,6 +5,8 @@ from scrapy.spiders import CrawlSpider, Rule
 from web_news.misc.spiderredis import SpiderRedis
 import re
 from web_news.items import SpiderItem
+from scrapy.loader import ItemLoader
+
 
 class HuanqiuSpider(SpiderRedis):
     name = 'huanqiu'
@@ -42,4 +44,4 @@ class HuanqiuSpider(SpiderRedis):
             i['url'] = response.url
             i['collection_name'] = self.name
             i['website'] = self.website
-        return SpiderItem(i)
+        return ItemLoader(item=SpiderItem(i), response=response, ).load_item()
