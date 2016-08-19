@@ -8,11 +8,11 @@ import re
 class HuanqiuSpider(SpiderRedis):
     name = 'huanqiu'
     allowed_domains = ['china.huanqiu.com', 'society.huanqiu.com']
-    start_urls = ['http://www.huanqiu.com/']
+    start_urls = ['http://china.huanqiu.com/article/2016-08/9318559.html']
     website = u'环球网'
 
     rules = (
-        Rule(LinkExtractor(allow=r'article/.*/(\d+).ht'), callback='parse_item', follow=True),
+        Rule(LinkExtractor(allow=r'article/.*/(\d+)(_\d+){0,1}.ht'), callback='parse_item', follow=True),
         Rule(LinkExtractor(allow=r'society.huanqiu.com'), follow=True),
         Rule(LinkExtractor(allow=r'china.huanqiu.com'), follow=True),
     )
@@ -32,7 +32,6 @@ class HuanqiuSpider(SpiderRedis):
             assert i['date'] != '', 'date not found'
             assert i['source'] != '', 'source not found'
             assert i['content'] != '', 'content not found'
-
         except Exception as e:
             self.logger.error('error url: %s error msg: %s' % (response.url, e))
             i['date'] = '1970-01-01 00:00:00'
