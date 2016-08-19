@@ -4,6 +4,7 @@ from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
 from web_news.misc.spiderredis import SpiderRedis
 import re
+from web_news.items import SpiderItem
 
 class HuanqiuSpider(SpiderRedis):
     name = 'huanqiu'
@@ -27,7 +28,7 @@ class HuanqiuSpider(SpiderRedis):
                 raise Exception('response status %s'%response.status)
             i['date'] = response.xpath('//strong[@id="pubtime_baidu"]/descendant-or-self::text()').extract_first()
             i['source'] = response.xpath('//strong[@id="source_baidu"]/descendant-or-self::text()').extract_first()
-            i['content'] = ''.join(response.xpath('//div[@class="text"]/descendant-or-self::text()').extract())
+            i['content'] = ''.join(response.xpath('//div[@class="text"]/descendant-or-self::p/text()').extract())
             # found new fomate
             assert i['date'] != '', 'date not found'
             assert i['source'] != '', 'source not found'
@@ -41,4 +42,4 @@ class HuanqiuSpider(SpiderRedis):
             i['url'] = response.url
             i['collection_name'] = self.name
             i['website'] = self.website
-        return i
+        return SpiderItem(i)

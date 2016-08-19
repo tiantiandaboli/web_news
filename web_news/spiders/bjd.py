@@ -3,6 +3,7 @@ import scrapy
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
 from web_news.misc.spiderredis import SpiderRedis
+from web_news.items import SpiderItem
 
 class BjdSpider(SpiderRedis):
     name = 'bjd'
@@ -32,4 +33,4 @@ class BjdSpider(SpiderRedis):
             i['url'] = response.url
             i['collection_name'] = self.name
             i['website'] = self.website
-        return i
+        return SpiderItem(i)
