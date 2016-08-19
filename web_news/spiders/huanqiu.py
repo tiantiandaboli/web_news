@@ -22,13 +22,13 @@ class HuanqiuSpider(SpiderRedis):
         try:
             if response.status != 200:
                 raise Exception('response status %s'%response.status)
-            i['date'] = response.xpath('//strong[@id="pubtime_baidu"]/text()').extract_first()
-            i['source'] = response.xpath('//strong[@id="source_baidu"]/text()').extract_first()
+            i['date'] = response.xpath('//strong[@id="pubtime_baidu"]/descendant-or-self::text()').extract_first()
+            i['source'] = response.xpath('//strong[@id="source_baidu"]/descendant-or-self::text()').extract_first()
             i['content'] = ''.join(response.xpath('//div[@class="text"]/descendant-or-self::text()').extract())
             # found new fomate
-            assert i['date'] != '';
-            assert i['source'] != '';
-            assert i['content'] != '';
+            assert i['date'] != ''
+            assert i['source'] != ''
+            assert i['content'] != ''
 
         except Exception as e:
             self.logger.error('error url: %s error msg: %s' % (response.url, e))
