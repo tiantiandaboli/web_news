@@ -3,6 +3,7 @@ import scrapy
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
 from web_news.misc.spiderredis import SpiderRedis
+import re
 
 class HuanqiuSpider(SpiderRedis):
     name = 'huanqiu'
