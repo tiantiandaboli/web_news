@@ -50,7 +50,6 @@ class BjnewsSpider(SpiderRedis):
             l.add_value('content', ''.join(response.xpath('//div[@class="content"]/descendant-or-self::text()').extract()))
             pass
         except Exception as e:
-            inspect_response(response, self)
             self.logger.error('error url: %s error msg: %s' % (response.url, e))
             l = ItemLoader(item=SpiderItem(), response=response)
             l.add_value('title', '')

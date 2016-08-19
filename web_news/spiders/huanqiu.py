@@ -21,30 +21,26 @@ class HuanqiuSpider(SpiderRedis):
     )
 
     def parse_item(self, response):
-        i = {}
-        i['title'] = response.xpath('//title/text()').extract_first()
+        l = ItemLoader(item=SpiderItem(), response=response)
+        l.add_value('title', response.xpath('//title/text()').extract_first())
         try:
             if response.url == 'http://www.huanqiu.com' or re.search(r'/404.h', response.body) != None:
                 raise Exception('this item may be deleted')
             if response.status != 200:
                 raise Exception('response status %s'%response.status)
-            i['date'] = response.xpath('//strong[@id="pubtime_baidu"]/descendant-or-self::text()').extract_first()
-            i['source'] = response.xpath('//strong[@id="source_baidu"]/descendant-or-self::text()').extract_first()
-            i['content'] = ''.join(response.xpath('//div[@class="text"]/descendant-or-self::p/text()').extract())
-            # found new fomate
-            assert i['date'] != '', 'date not found'
-            assert i['source'] != '', 'source not found'
-            assert i['content'] != '', 'content not found'
+            l.add_value('date', response.xpath('//strong[@id="pubtime_baidu"]/descendant-or-self::text()').extract_first())
+            l.add_value('source', response.xpath('//strong[@id="source_baidu"]/descendant-or-self::text()').extract_first())
+            l.add_value('content', ''.join(response.xpath('//div[@class="text"]/descendant-or-self::p/text()').extract()))
+
         except Exception as e:
             self.logger.error('error url: %s error msg: %s' % (response.url, e))
-            i['date'] = '1970-01-01 00:00:00'
-            i['source'] = ''
-            i['content'] = ''
+            l = ItemLoader(item=SpiderItem(), response=response)
+            l.add_value('title', '')
+            l.add_value('date', '1970-01-01 00:00:00')
+            l.add_value('source', '')
+            l.add_value('content', '')
         finally:
-            i['url'] = response.url
-            i['collection_name'] = self.name
-            i['website'] = self.website
-        l = ItemLoader(item=SpiderItem(), response=response)
-        for k, v in i.items():
-            l.add_value(k, v)
-        return l.load_item()
+            l.add_value('url', response.url)
+            l.add_value('collection_name', self.name)
+            l.add_value('website', self.website)
+            return l.load_item()
