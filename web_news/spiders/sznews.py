@@ -56,6 +56,7 @@ class SznewsSpider(SpiderRedis):
         else:
             return
 
+
     def parse_item(self, response):
         l = ItemLoader(item=SpiderItem(), response=response)
         try:
