@@ -50,7 +50,7 @@ class SznewsSpider(SpiderRedis):
             delta = timedelta(days=1)
             yestoday = today - delta
             yesurl = 'html/%s-%02d/%02d/node_1163.htm' % (yestoday.year, yestoday.month, yestoday.day)
-            self.logger.info("pre request %s"%urljoin(response.url, yesurl))
+            self.logger.info("pre request %s"%urljoin(self.start_urls, yesurl))
             return [scrapy.Request(url=urljoin(response.url, yesurl), callback=self.old_news),]
         else:
             return
