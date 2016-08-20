@@ -35,7 +35,6 @@ class SznewsSpider(SpiderRedis):
                 scrapy.Request(url=urljoin(response.url, yesurl), callback=self.old_news)
                ]
 
-
     def old_news(self, response):
         # parse today news
         if response.status != 404:
