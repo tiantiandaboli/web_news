@@ -43,10 +43,13 @@ class SznewsSpider(SpiderRedis):
         # parse today news
         # self._requests_to_follow(response)
         links = self.filter.bool_fllow(response, self.rules)
-        if len(links) > 0:
+        if len(links) > 0 or response.status == 404:
             # if found some url not exist in db, check yestoday's news
             a = re.search(r'\d+-\d+/\d+', response.url).group().replace('-', '/').split('/')
             today = datetime(year=int(a[0]), month=int(a[1]), day=int(a[2]))
+            # only crawl after 2015
+            if int(a[0]) < 2015:
+                return
             delta = timedelta(days=1)
             yestoday = today - delta
             yesurl = 'html/%s-%02d/%02d/node_1163.htm' % (yestoday.year, yestoday.month, yestoday.day)
