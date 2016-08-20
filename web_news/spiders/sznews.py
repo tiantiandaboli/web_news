@@ -30,17 +30,18 @@ class SznewsSpider(SpiderRedis):
         yesurl = 'html/%s-%02d/%02d/node_1163.htm'%(yestoday.year, yestoday.month, yestoday.day)
         # try request yestodays news
         return  [
-                scrapy.Request(url=url, callback=self._requests_to_follow),
+                # scrapy.Request(url=url, callback=self._requests_to_follow),
                 scrapy.Request(url=urljoin(response.url, yesurl), callback=self.old_news)
                ]
 
 
     def old_news(self, response):
+        self.logger.info(response.url)
         if response.status == 404:
-            self.logger("%s 404 not found"%(response.url))
+            self.logger.info("%s 404 not found"%(response.url))
             return
         # parse today news
-        self._requests_to_follow(response)
+        # self._requests_to_follow(response)
         links = self.filter.bool_fllow(response, self.rules)
         if len(links) > 0:
             # if found some url not exist in db, check yestoday's news
