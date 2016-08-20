@@ -19,7 +19,7 @@ class SznewsSpider(SpiderRedis):
         Rule(LinkExtractor(allow=r'content_'), callback='parse_item', follow=True),
         Rule(LinkExtractor(allow=r'node_'), follow=True),
         # main page dynamic load today news
-        Rule(LinkExtractor(allow=r'jb.sznews.com'), callback="mainPage", follow=True),
+        Rule(LinkExtractor(allow=r'jb.sznews.com'), callback="main_page", follow=True),
     )
     def main_page(self, response):
         url = urljoin(response.url, re.search(r'html/.*/node_1163.htm', response.body).group())
