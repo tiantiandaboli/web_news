@@ -23,15 +23,17 @@ class SznewsSpider(SpiderRedis):
     )
     def parse_start_url(self, response):
         url = urljoin(response.url, re.search(r'html/.*/node_1163.htm', response.body).group())
-        # request real news url
-        yield scrapy.Request(url=url, callback=self._requests_to_follow)
         a = re.search(r'\d+-\d+/\d+', url).group().replace('-', '/').split('/')
         today = datetime(year=int(a[0]), month=int(a[1]), day=int(a[2]))
         delta = timedelta(days=1)
         yestoday = today-delta
         yesurl = 'html/%s-%s/%s/node_1163.htm'%(yestoday.year, yestoday.month, yestoday.day)
         # try request yestodays news
-        yield scrapy.Request(url=urljoin(response.url, yesurl), callback=self.old_news)
+        yield  [
+                scrapy.Request(url=url, callback=self._requests_to_follow),
+                scrapy.Request(url=urljoin(response.url, yesurl), callback=self.old_news)
+               ]
+
 
     def old_news(self, response):
         if response.status == 404:
