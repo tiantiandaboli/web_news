@@ -65,7 +65,7 @@ class SznewsSpider(SpiderRedis):
                 raise Exception('response status %s'%response.status)
             l.add_value('title', response.xpath('//title/text()').extract_first() or '')
             date = response.xpath('//td[@width="25%"]/text()').re(u"\d+年\d+月\d+日")[0]
-            date = date.replace(u'年', '-').replace(u'月', '-').replace(u'日', '-')
+            date = date.replace(u'年', '-').replace(u'月', '-').replace(u'日', ' ')+'00:00:00'
             l.add_value('date', date)
             l.add_value('source', self.website)
             l.add_value('content', ''.join(response.xpath('//div[@id="ozoom"]/descendant-or-self::p/text()').extract()) or '')
