@@ -50,11 +50,10 @@ class SznewsSpider(SpiderRedis):
             delta = timedelta(days=1)
             yestoday = today - delta
             yesurl = 'html/%s-%02d/%02d/node_1163.htm' % (yestoday.year, yestoday.month, yestoday.day)
-            self.logger.info("pre request %s"%urljoin(self.start_urls, yesurl))
-            return [scrapy.Request(url=urljoin(response.url, yesurl), callback=self.old_news),]
+            self.logger.info("pre request %s"%urljoin(self.start_urls[0], yesurl))
+            yield  scrapy.Request(url=urljoin(self.start_urls[0], yesurl), callback=self.old_news)
         else:
             return
-
 
     def parse_item(self, response):
         l = ItemLoader(item=SpiderItem(), response=response)
