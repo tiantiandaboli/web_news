@@ -27,7 +27,7 @@ class SznewsSpider(SpiderRedis):
         today = datetime(year=int(a[0]), month=int(a[1]), day=int(a[2]))
         delta = timedelta(days=1)
         yestoday = today-delta
-        yesurl = 'html/%s-%s/%s/node_1163.htm'%(yestoday.year, yestoday.month, yestoday.day)
+        yesurl = 'html/%s-%02d/%02d/node_1163.htm'%(yestoday.year, yestoday.month, yestoday.day)
         # try request yestodays news
         return  [
                 scrapy.Request(url=url, callback=self._requests_to_follow),
@@ -37,6 +37,7 @@ class SznewsSpider(SpiderRedis):
 
     def old_news(self, response):
         if response.status == 404:
+            self.logger("%s 404 not found"%(response.url))
             return
         # parse today news
         self._requests_to_follow(response)
@@ -47,7 +48,7 @@ class SznewsSpider(SpiderRedis):
             today = datetime(year=int(a[0]), month=int(a[1]), day=int(a[2]))
             delta = timedelta(days=1)
             yestoday = today - delta
-            yesurl = 'html/%s-%s/%s/node_1163.htm' % (yestoday.year, yestoday.month, yestoday.day)
+            yesurl = 'html/%s-%02d/%02d/node_1163.htm' % (yestoday.year, yestoday.month, yestoday.day)
             yield scrapy.Request(url=urljoin(response.url, yesurl), callback=self.old_news)
         else:
             return
