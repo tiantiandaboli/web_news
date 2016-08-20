@@ -37,7 +37,6 @@ class SznewsSpider(SpiderRedis):
 
 
     def old_news(self, response):
-        self.logger.info(response.url)
         # parse today news
         if response.status != 404:
             self._requests_to_follow(response)
