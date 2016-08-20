@@ -26,7 +26,7 @@ class SznewsSpider(SpiderRedis):
         # request real news url
         yield scrapy.Request(url=url, callback=self._requests_to_follow)
         a = re.search(r'\d+-\d+/\d+', url).group().replace('-', '/').split('/')
-        today = datetime(year=a[0], month=a[1], day=a[2])
+        today = datetime(year=int(a[0]), month=int(a[1]), day=int(a[2]))
         delta = timedelta(days=1)
         yestoday = today-delta
         yesurl = 'html/%s-%s/%s/node_1163.htm'%(yestoday.year, yestoday.month, yestoday.day)
@@ -42,7 +42,7 @@ class SznewsSpider(SpiderRedis):
         if len(links) > 0:
             # if found some url not exist in db, check yestoday's news
             a = re.search(r'\d+-\d+/\d+', response.url).group().replace('-', '/').split('/')
-            today = datetime(year=a[0], month=a[1], day=a[2])
+            today = datetime(year=int(a[0]), month=int(a[1]), day=int(a[2]))
             delta = timedelta(days=1)
             yestoday = today - delta
             yesurl = 'html/%s-%s/%s/node_1163.htm' % (yestoday.year, yestoday.month, yestoday.day)
