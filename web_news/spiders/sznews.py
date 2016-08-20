@@ -68,6 +68,7 @@ class SznewsSpider(SpiderRedis):
             date = date.replace(u'年', '-').replace(u'月', '-').replace(u'日', ' ')+'00:00:00'
             l.add_value('date', date)
             l.add_value('source', self.website)
+            l.add_value('content', ''.join(response.xpath('//td[@class="font02"]/text()').extract()))
             l.add_value('content', ''.join(response.xpath('//div[@id="ozoom"]/descendant-or-self::p/text()').extract()) or '')
 
         except Exception as e:
