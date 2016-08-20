@@ -14,7 +14,8 @@ class SznewsSpider(SpiderRedis):
     allowed_domains = ['jb.sznews.com']
     start_urls = ['http://jb.sznews.com/']
     website = u'晶报网'
-
+    handle_httpstatus_list = [404]
+    
     rules = (
         Rule(LinkExtractor(allow=r'content_'), callback='parse_item', follow=True),
         Rule(LinkExtractor(allow=r'node_'), follow=True),
