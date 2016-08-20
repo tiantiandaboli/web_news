@@ -37,11 +37,12 @@ class SznewsSpider(SpiderRedis):
 
     def old_news(self, response):
         self.logger.info(response.url)
-        if response.status == 404:
-            self.logger.info("%s 404 not found"%(response.url))
-            return
+        # if response.status == 404:
+        #     self.logger.info("%s 404 not found"%(response.url))
+        #     return
         # parse today news
-        # self._requests_to_follow(response)
+        # if response.status != 404:
+        #     self._requests_to_follow(response)
         links = self.filter.bool_fllow(response, self.rules)
         if len(links) > 0 or response.status == 404:
             # if found some url not exist in db, check yestoday's news
