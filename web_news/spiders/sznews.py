@@ -19,9 +19,9 @@ class SznewsSpider(SpiderRedis):
         Rule(LinkExtractor(allow=r'content_'), callback='parse_item', follow=True),
         Rule(LinkExtractor(allow=r'node_'), follow=True),
         # main page dynamic load today news
-        Rule(LinkExtractor(allow=r'jb.sznews.com'), callback="main_page", follow=True),
+        # Rule(LinkExtractor(allow=r'jb.sznews.com'), callback="main_page", follow=True),
     )
-    def main_page(self, response):
+    def parse_start_url(self, response):
         url = urljoin(response.url, re.search(r'html/.*/node_1163.htm', response.body).group())
         # request real news url
         yield scrapy.Request(url=url, callback=self._requests_to_follow)
