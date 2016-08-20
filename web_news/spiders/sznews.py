@@ -5,6 +5,7 @@ from scrapy.spiders import CrawlSpider, Rule
 from web_news.misc.spiderredis import SpiderRedis
 from web_news.items import SpiderItem
 from  scrapy.loader import ItemLoader
+from  urlparse import urljoin
 import re
 
 class SznewsSpider(SpiderRedis):
@@ -16,7 +17,11 @@ class SznewsSpider(SpiderRedis):
     rules = (
         Rule(LinkExtractor(allow=r'content_'), callback='parse_item', follow=True),
         Rule(LinkExtractor(allow=r'node_'), follow=True),
+        Rule(LinkExtractor(allow=r'jb.sznews.com'), callback="mainPage", follow=True),
     )
+    def main_page(self, response):
+        url = urljoin(response.url, re.search(r'html/.*/node_1163.htm', response.body).group())
+        yield scrapy.Request(url=url, callback=self._requests_to_follow)
 
     def parse_item(self, response):
         l = ItemLoader(item=SpiderItem(), response=response)
