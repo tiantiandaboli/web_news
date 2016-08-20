@@ -29,7 +29,7 @@ class SznewsSpider(SpiderRedis):
         yestoday = today-delta
         yesurl = 'html/%s-%s/%s/node_1163.htm'%(yestoday.year, yestoday.month, yestoday.day)
         # try request yestodays news
-        yield  [
+        return  [
                 scrapy.Request(url=url, callback=self._requests_to_follow),
                 scrapy.Request(url=urljoin(response.url, yesurl), callback=self.old_news)
                ]
