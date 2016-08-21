@@ -9,7 +9,7 @@ from web_news.misc.spiderredis import SpiderRedis
 
 class A21cnSpider(SpiderRedis):
     name = '21cn'
-    allowed_domains = ['http://news.21cn.com/']
+    allowed_domains = ['news.21cn.com/']
     start_urls = ['http://news.21cn.com/']
     website = u'21CN网'
 
