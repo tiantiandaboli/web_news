@@ -16,7 +16,7 @@ class GysdjSpider(SpiderRedis):
 
     rules = (
         Rule(LinkExtractor(allow=r'/(\d+).shtml'), callback='parse_item', follow=False),
-        Rule(LinkExtractor(allow=r'index'), follow=False),
+        Rule(LinkExtractor(allow=r'index'), follow=True),
 
     )
 
