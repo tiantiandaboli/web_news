@@ -17,7 +17,7 @@ class GywbSpider(SpiderRedis):
     start_urls = ['http://www.gywb.cn']
 
     rules = (
-        Rule(LinkExtractor(allow=r'content_'), callback='parse_item', follow=True),
+        Rule(LinkExtractor(allow=r'content_'), callback='parse_item', follow=False),
         # 匹配党政
         Rule(LinkExtractor(allow=r'/gov/'), follow=True),
        Rule(LinkExtractor(allow=r'/xinwen/'), follow=True),

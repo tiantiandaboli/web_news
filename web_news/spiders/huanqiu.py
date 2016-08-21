@@ -15,7 +15,7 @@ class HuanqiuSpider(SpiderRedis):
     website = u'环球网'
 
     rules = (
-        Rule(LinkExtractor(allow=r'article/.*/(\d+)(_\d+){0,1}.ht'), callback='parse_item', follow=True),
+        Rule(LinkExtractor(allow=r'article/.*/(\d+)(_\d+){0,1}.ht'), callback='parse_item', follow=False),
         Rule(LinkExtractor(allow=r'society.huanqiu.com'), follow=True),
         Rule(LinkExtractor(allow=r'china.huanqiu.com'), follow=True),
     )

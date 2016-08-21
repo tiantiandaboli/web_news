@@ -13,7 +13,7 @@ class BjdSpider(SpiderRedis):
     website = u'京报网'
 
     rules = (
-        Rule(LinkExtractor(allow=r't(\d+)_(\d+)'), callback='parse_item', follow=True),
+        Rule(LinkExtractor(allow=r't(\d+)_(\d+)'), callback='parse_item', follow=False),
         Rule(LinkExtractor(allow=r'bjd.com.cn'), follow=True),
     )
 

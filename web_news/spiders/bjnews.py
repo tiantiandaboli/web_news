@@ -22,7 +22,7 @@ class BjnewsSpider(SpiderRedis):
     start_urls = ['http://www.bjnews.com.cn/news/', 'http://www.bjnews.com.cn/news/list-43-page-1.html']
 
     rules = (
-        Rule(LinkExtractor(allow=r'news/(\d+){4}/(\d+){2}/(\d+){2}/(\d+)'), callback='parse_item', follow=True),
+        Rule(LinkExtractor(allow=r'news/(\d+){4}/(\d+){2}/(\d+){2}/(\d+)'), callback='parse_item', follow=False),
         Rule(LinkExtractor(allow=r'news/list-43-page-(\d+)'), follow=True),
         Rule(LinkExtractor(allow=r'news/?page=(\d+)'), follow=True),
     )
