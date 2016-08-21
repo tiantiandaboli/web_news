@@ -15,8 +15,8 @@ class GysdjSpider(SpiderRedis):
     website = r'贵阳党建网'
 
     rules = (
-        Rule(LinkExtractor(allow=r'/\d+.shtml'), callback='parse_item', follow=False),
-        Rule(LinkExtractor(allow=r'gysdj'), follow=True),
+        Rule(LinkExtractor(allow=r'/(\d+).shtml'), callback='parse_item', follow=False),
+        Rule(LinkExtractor(allow=r'gysdj'), follow=False),
 
     )
 
