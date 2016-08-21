@@ -17,7 +17,7 @@ class SznewsSpider(SpiderRedis):
     handle_httpstatus_list = [404]
 
     rules = (
-        Rule(LinkExtractor(allow=r'content_'), callback='parse_item', follow=True),
+        Rule(LinkExtractor(allow=r'content_'), callback='parse_item', follow=False),
         Rule(LinkExtractor(allow=r'node_'), follow=True),
         # main page dynamic load today news
         # Rule(LinkExtractor(allow=r'jb.sznews.com'), callback="main_page", follow=True),
