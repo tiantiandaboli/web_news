@@ -5,9 +5,10 @@ from scrapy.loader import ItemLoader
 from scrapy.spiders import CrawlSpider, Rule
 
 from web_news.items import SpiderItem
+from web_news.misc.spiderredis import SpiderRedis
 
 
-class GysdjSpider(CrawlSpider):
+class GysdjSpider(SpiderRedis):
     name = 'gysdj'
     allowed_domains = ['www.gysdj.gov.cn']
     start_urls = ['http://www.gysdj.gov.cn/']
