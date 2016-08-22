@@ -26,7 +26,7 @@ class YunyanSpider(SpiderRedis):
             l.add_value('title', response.xpath('//title/text()').extract_first() or '')
             l.add_value('date', date_source_author[1] if len(date_source_author)>1 else '1970-01-01 00:00:00')
             l.add_value('source', date_source_author[2] if len(date_source_author)>2 else '')
-            l.add_value('content', ''.join(response.xpath('//div[@id="content"]/descendant-or-self::p/text()').extract()))
+            l.add_value('content', ''.join(response.xpath('//div[@id="content"]/descendant-or-self::text()').extract()))
         except Exception as e:
             self.logger.error('error url: %s error msg: %s' % (response.url, e))
             l = ItemLoader(item=SpiderItem(), response=response)
