@@ -23,7 +23,7 @@ class NmdjSpider(SpiderRedis):
     def parse_item(self, response):
         l = ItemLoader(item=SpiderItem(), response=response)
         try:
-            l.add_value('title', response.xpath('//span[@id="Main1_zt"]/text()').extract_first() or '')
+            l.add_value('title', response.xpath('//span[contains(@id, "zt")]/text()').extract_first() or '')
             l.add_value('title', response.xpath('//span[@id="show_bt"]/descendant-or-self::text()').extract_first() or '')
             l.add_value('title', response.xpath('//span[@class="show_bt"]/descendant-or-self::text()').extract_first() or '')
 
@@ -35,7 +35,12 @@ class NmdjSpider(SpiderRedis):
             l.add_value('date', date)
 
             l.add_value('source', self.website)
-            l.add_value('content', ''.join(response.xpath('//div[@id="Main1_txt"]/descendant-or-self::text()').extract()))
+
+            l.add_value('content',
+                        ''.join(response.xpath('//div[@id="Main1_txt"]/descendant-or-self::text()').extract()))
+            l.add_value('content',
+                        ''.join(response.xpath('//span[@id="Main1_txt"]/descendant-or-self::text()').extract()))
+
             l.add_value('content', ''.join(response.xpath('//span[@id="txt"]/descendant-or-self::text()').extract()))
 
         except Exception as e:
