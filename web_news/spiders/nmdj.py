@@ -27,6 +27,8 @@ class NmdjSpider(SpiderRedis):
             l.add_value('date', (response.xpath('//span[contains(@id, "sj")]/text()').re_first(r'\d+-\d+-\d+') or '1970-01-01') + ' 00:00:00')
             l.add_value('source', self.website)
             l.add_value('content', ''.join(response.xpath('//div[@id="Main1_txt"]/descendant-or-self::text()').extract()))
+            l.add_value('content', ''.join(response.xpath('//span[@id="txt"]/descendant-or-self::text()').extract()))
+
         except Exception as e:
             self.logger.error('error url: %s error msg: %s' % (response.url, e))
             l = ItemLoader(item=SpiderItem(), response=response)
