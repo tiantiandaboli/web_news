@@ -24,7 +24,16 @@ class NmdjSpider(SpiderRedis):
         l = ItemLoader(item=SpiderItem(), response=response)
         try:
             l.add_value('title', response.xpath('//span[@id="Main1_zt"]/text()').extract_first() or '')
-            l.add_value('date', (response.xpath('//span[contains(@id, "sj")]/text()').re_first(r'\d+-\d+-\d+') or '1970-01-01') + ' 00:00:00')
+            l.add_value('title', response.xpath('//span[@id="show_bt"]/descendant-or-self::text()').extract_first() or '')
+            l.add_value('title', response.xpath('//span[@class="show_bt"]/descendant-or-self::text()').extract_first() or '')
+
+            date = response.xpath('//span[contains(@id, "sj")]/text()').re_first(r'\d+-\d+-\d+')
+            if date == None:
+                date = response.xpath('//div[contains(@class, "show_date")]/text()').re_first(r'\d+-\d+-\d+')
+            date = (date if date else '1970-01-01') + ' 00:00:00'
+
+            l.add_value('date', date)
+
             l.add_value('source', self.website)
             l.add_value('content', ''.join(response.xpath('//div[@id="Main1_txt"]/descendant-or-self::text()').extract()))
             l.add_value('content', ''.join(response.xpath('//span[@id="txt"]/descendant-or-self::text()').extract()))
