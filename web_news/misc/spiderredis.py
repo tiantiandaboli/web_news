@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from scrapy.spiders import CrawlSpider
 from scrapy.http import Request, HtmlResponse
-from filter import Filter
+from web_news.misc.filter import Filter
 from scrapy_redis.connection import get_redis_from_settings
 import json
+
 
 class SpiderRedis(CrawlSpider):
 
@@ -43,7 +44,6 @@ class SpiderRedis(CrawlSpider):
         spider.compete_key()
         return spider
 
-
     def _requests_to_follow(self, response):
         links = self.filter.bool_fllow(response, self.rules)
         if len(links) > 0:
@@ -68,4 +68,3 @@ class SpiderRedis(CrawlSpider):
                     yield rule.process_request(r)
         else:
             return
-

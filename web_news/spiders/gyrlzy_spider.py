@@ -1,14 +1,13 @@
 # -*- coding:utf-8 -*-
 from scrapy.selector import Selector
-from scrapy.spiders import Spider
+from web_news.misc.spiderredis import SpiderRedis
 from web_news.items import SpiderItem
 from scrapy.http import Request, FormRequest
 import re
-from web_news.misc.filter import Filter
 from scrapy.loader import ItemLoader
 
 
-class Gyrlzyspider(Spider):
+class Gyrlzyspider(SpiderRedis):
     name = "gyrlzy"
     website = u'贵阳人力资源和社会保障网'
     download_delay = 0.5
@@ -16,12 +15,6 @@ class Gyrlzyspider(Spider):
     start_urls = [
         "http://gzgy.lss.gov.cn/col/col262/index.html" 
     ]
-
-    @classmethod
-    def from_crawler(cls, crawler, *args, **kwargs):
-        spider = super(Gyrlzyspider, cls).from_crawler(crawler, *args, **kwargs)
-        spider.filter = Filter.from_crawler(spider.crawler, spider.name)
-        return spider
 
     def parse(self, response):
         sel = Selector(response)

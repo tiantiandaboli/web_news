@@ -1,27 +1,21 @@
 # -*- coding: utf-8 -*-
-from scrapy.spiders import Spider
+from web_news.misc.spiderredis import SpiderRedis
 from scrapy.http import Request
 from scrapy.selector import Selector
 from web_news.items import SpiderItem
 import re
 import chardet
 from urlparse import urljoin
-from web_news.misc.filter import Filter
 import time
 from scrapy.loader import ItemLoader
 
-class XwzzbSpider(Spider):
+
+class XwzzbSpider(SpiderRedis):
     name = 'xwzzb'
     website = u'息烽县党建网'
     allowed_domains = ['xwzzb.cn']
     type_ids = [21, 26, 25, 28, 32, 34, 24, 27, 38, 42, 40, 43, 32]
     start_urls = ['http://www.xwzzb.cn/Type.asp?typeid=' + str(type_id) for type_id in type_ids]
-
-    @classmethod
-    def from_crawler(cls, crawler, *args, **kwargs):
-        spider = super(XwzzbSpider, cls).from_crawler(crawler, *args, **kwargs)
-        spider.filter = Filter.from_crawler(spider.crawler, spider.name)
-        return spider
 
     def parse(self, response):
         urls = response.xpath('//a[@class="class"]/@href').extract()

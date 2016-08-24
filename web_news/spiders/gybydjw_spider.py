@@ -1,22 +1,15 @@
 # -*- coding: utf-8 -*-
-from scrapy.spiders import Spider
+from web_news.misc.spiderredis import SpiderRedis
 from scrapy.http import Request
 from web_news.items import SpiderItem
-from web_news.misc.filter import Filter
 from scrapy.loader import ItemLoader
 
 
-class GybydjwSpider(Spider):
+class GybydjwSpider(SpiderRedis):
     name = 'gybydjw'
     website = u'中共贵阳市白云区委党建网'
     allowed_domains = ['gybydjw.gov.cn']
     start_urls = ['http://www.gybydjw.gov.cn/']
-
-    @classmethod
-    def from_crawler(cls, crawler, *args, **kwargs):
-        spider = super(GybydjwSpider, cls).from_crawler(crawler, *args, **kwargs)
-        spider.filter = Filter.from_crawler(spider.crawler, spider.name)
-        return spider
 
     def parse(self, response):
         for sel in response.xpath('//td[@class="Baiyun1"]')[1:7]:

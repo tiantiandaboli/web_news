@@ -19,7 +19,6 @@ class A21cnSpider(SpiderRedis):
         Rule(LinkExtractor(allow=r'social//'), follow=True),
     )
 
-
     def parse_item(self, response):
         l = ItemLoader(item=SpiderItem(), response=response)
         try:
