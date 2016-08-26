@@ -39,7 +39,7 @@ class TongrenSpider(SpiderForum):
             iteminfo = response.meta.get('iteminfo')
             iteminfo['last_reply'] = response.xpath('//em[re:test(@id, "authorposton\d+")]')[-1].xpath('text()').re_first('\d+-\d+-\d+\W\d+:\d+:\d+') \
                                      or response.xpath('//em[re:test(@id, "authorposton\d+")]')[-1].xpath('span/@title').re_first('\d+-\d+-\d+\W\d+:\d+:\d+')
-            item = ItemLoader(item=FroumItem, response=response)
+            item = ItemLoader(item=FroumItem(), response=response)
             for k, v in iteminfo.items():
                 item.add_value(k, v)
             yield item.load_item()
