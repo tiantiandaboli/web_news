@@ -29,7 +29,7 @@ class TongrenSpider(SpiderForum):
             iteminfo['view_num'] = response.xpath('//div[@class="hm ptn"]/span[2]/text()').extract_first()
             iteminfo['reply_num'] = response.xpath('//div[@class="hm ptn"]/span[5]/text()').extract_first()
             iteminfo['title'] = response.xpath('//span[@id="thread_subject"]/text()').extract_first()
-            iteminfo['content'] = ''.join(response.xpath('//td[re:test(@id, "postmessage_\d+")]')[0].xpath('text()').extract())
+            iteminfo['content'] = ''.join(response.xpath('//td[re:test(@id, "postmessage_\d+")]')[0].xpath('descendant-or-self::text()').extract())
             iteminfo['collection_name'] = self.name
             iteminfo['website'] = self.website
             iteminfo['date'] = response.xpath('//em[re:test(@id, "authorposton\d+")]')[0].xpath('text()').re_first('\d+-\d+-\d+\W\d+:\d+:\d+') \
