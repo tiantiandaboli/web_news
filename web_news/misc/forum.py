@@ -59,9 +59,9 @@ class SpiderForum(Spider):
         for it in self.parse_each_item(response):
             yield it
             # it may be item or request
-            if it is isinstance(Item):
+            if isinstance(it, Item):
                 it = dict(it)
-            if it is isinstance(dict):
+            if isinstance(it, dict):
                 if response.meta.get('nextpage') and \
                         it.get('last_reply') and \
                         not self.filter.link_lastupdate(response.url, it['last_reply']):
