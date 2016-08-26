@@ -27,6 +27,15 @@ class Filter(object):
 
         return ret
 
+    def link_lastupdate(self, link, last_reply):
+        if link+last_reply in self.seen:
+            return True
+        ret = self.col.find({'url': link, 'collection_name': self.name, 'last_reply':last_reply}).count() > 0
+
+        if ret:
+            self.seen.add(link+last_reply)
+        return ret
+
     def bool_fllow(self, response, _rules):
         links = list(self._requests_to_follow(response, _rules))
         _links = []

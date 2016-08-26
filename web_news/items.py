@@ -28,3 +28,17 @@ class SpiderItem(Item):
     view_num = Field(output_processor=Join(separator=''))
     brief = Field(output_processor=Join(separator=''))
     website = Field(output_processor=Join(separator=''))
+
+
+class FroumItem(Item):
+    url = Field(output_processor=Join(separator=''))
+    date = Field(output_processor=Join(separator=''))
+    last_reply = Field(output_processor=Join(separator=''))
+    title = Field(output_processor=Join(separator=''))
+    content = Field(output_processor=Compose(''.join, removern, ''.join))
+    md5 = Field(output_processor=Join(separator=''))
+    collection_name = Field(output_processor=Join(separator=''))
+    view_num = Field(output_processor=Join(separator=''))
+    reply_num = Field(output_processor=Join(separator=''))
+    website = Field(output_processor=Join(separator=''))
+
