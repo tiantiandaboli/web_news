@@ -34,7 +34,7 @@ class TongrenSpider(SpiderForum):
             iteminfo['website'] = self.website
             iteminfo['date'] = response.xpath('//em[re:test(@id, "authorposton\d+")]')[0].xpath('text()').re_first('\d+-\d+-\d+\W\d+:\d+:\d+') \
                                or response.xpath('//em[re:test(@id, "authorposton\d+")]')[0].xpath('span/@title').re_first('\d+-\d+-\d+\W\d+:\d+:\d+')
-            yield Request(url=response.request.url+'?page=100000000', callback=self.parse_each_item(), meta={'iteminfo':iteminfo})
+            yield Request(url=response.request.url+'?page=100000000', callback=self.parse_each_item, meta={'iteminfo':iteminfo})
         else:
             iteminfo = response.meta.get('iteminfo')
             iteminfo['last_reply'] = response.xpath('//em[re:test(@id, "authorposton\d+")]')[-1].xpath('text()').re_first('\d+-\d+-\d+\W\d+:\d+:\d+') \
