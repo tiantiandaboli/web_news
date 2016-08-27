@@ -17,12 +17,19 @@ class TongrenSpider(SpiderForum):
         'http://www.daguizx.com/tongren/1',
     )
 
+    custom_settings = {
+        'REDIRECT_ENABLED':True
+    }
+
+    item_url_temp = 'http://www.daguizx.com/forum.php?mod=viewthread&tid=%(item_no)s&extra=page%3D&page=%(page_no)s'
     def parse_each_node(self, response):
         tbody_list = response.xpath('//tbody[re:test(@id, "normalthread_\d+")]')
         for i, tbody in enumerate(tbody_list):
-            url = tbody.xpath('descendant::td[@class="num"]/a/@href').extract_first()
-            base_url = response.xpath('//base/@href').extract_first()
-            yield Request(url=urljoin(base_url, url))
+            # url = tbody.xpath('descendant::td[@class="num"]/a/@href').extract_first()
+            # base_url = response.xpath('//base/@href').extract_first()
+            # yield Request(url=urljoin(base_url, url))
+            item_no = tbody.xpath('descendant::td[@class="num"]/a/@href').re_first('\d+')
+            yield Request(url=self.item_url_temp%{'item_no':item_no, 'page_no':1})
 
     def parse_each_item(self, response):
         if response.meta.get('iteminfo') == None:
@@ -36,7 +43,10 @@ class TongrenSpider(SpiderForum):
             iteminfo['website'] = self.website
             iteminfo['date'] = response.xpath('//em[re:test(@id, "authorposton\d+")]')[0].xpath('text()').re_first('\d+-\d+-\d+\W\d+:\d+:\d+') \
                                or response.xpath('//em[re:test(@id, "authorposton\d+")]')[0].xpath('span/@title').re_first('\d+-\d+-\d+\W\d+:\d+:\d+')
-            yield Request(url=response.request.url+'?page=100000000', callback=self.parse_each_item, meta={'iteminfo':iteminfo})
+            # yield Request(url=response.request.url+'?page=100000000', callback=self.parse_each_item, meta={'iteminfo':iteminfo})
+            last_page = 'http://www.daguizx.com/forum.php?mod=redirect&tid=205457&goto=lastpost#lastpost'
+            url = re.sub('tid=\d+', re.search(r'tid=\d+', response.url).group(), last_page)
+            yield Request(url=url, callback=self.parse_each_item, meta={'iteminfo':iteminfo})
         else:
             iteminfo = response.meta.get('iteminfo')
             iteminfo['last_reply'] = response.xpath('//em[re:test(@id, "authorposton\d+")]')[-1].xpath('text()').re_first('\d+-\d+-\d+\W\d+:\d+:\d+') \
