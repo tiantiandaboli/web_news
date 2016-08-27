@@ -21,7 +21,7 @@ class TongrenSpider(SpiderForum):
         'REDIRECT_ENABLED':True
     }
 
-    item_url_temp = 'http://www.daguizx.com/forum.php?mod=viewthread&tid=%(item_no)s&extra=page%3D&page=%(page_no)s'
+    item_url_temp = 'http://www.daguizx.com/forum.php?mod=viewthread&tid=%(item_no)s&extra=page%%3D&page=%(page_no)s'
     def parse_each_node(self, response):
         tbody_list = response.xpath('//tbody[re:test(@id, "normalthread_\d+")]')
         for i, tbody in enumerate(tbody_list):
