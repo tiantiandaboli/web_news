@@ -20,7 +20,8 @@ class TongrenSpider(SpiderForum):
         tbody_list = response.xpath('//tbody[re:test(@id, "normalthread_\d+")]')
         for i, tbody in enumerate(tbody_list):
             url = tbody.xpath('descendant::td[@class="num"]/a/@href').extract_first()
-            yield Request(url=urljoin(response.request.url, url))
+            base_url = response.xpath('//base/@href').extract_first()
+            yield Request(url=urljoin(base_url, url))
 
     def parse_each_item(self, response):
         if response.meta.get('iteminfo') == None:
