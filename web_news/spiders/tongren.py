@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from urlparse import urljoin
 
+import re
 from scrapy import Request
 from scrapy.loader import ItemLoader
 
@@ -13,7 +14,7 @@ class TongrenSpider(SpiderForum):
     allowed_domains = ["www.daguizx.com"]
     website = u'铜仁论坛'
     start_urls = (
-        'http://www.daguizx.com/tongren/',
+        'http://www.daguizx.com/tongren/1',
     )
 
     def parse_each_node(self, response):
@@ -28,7 +29,7 @@ class TongrenSpider(SpiderForum):
             iteminfo = {}
             iteminfo['url'] = response.url
             iteminfo['view_num'] = response.xpath('//div[@class="hm ptn"]/span[2]/text()').extract_first()
-            iteminfo['reply_num'] = response.xpath('//div[@class="hm ptn"]/span[5]/text()').extract_first()
+            iteminfo['reply_num'] = response.xpath('//div[@cl ass="hm ptn"]/span[5]/text()').extract_first()
             iteminfo['title'] = response.xpath('//span[@id="thread_subject"]/text()').extract_first()
             iteminfo['content'] = ''.join(response.xpath('//td[re:test(@id, "postmessage_\d+")]')[0].xpath('descendant-or-self::text()').extract())
             iteminfo['collection_name'] = self.name
@@ -46,4 +47,6 @@ class TongrenSpider(SpiderForum):
             yield item.load_item()
 
     def next_page(self, response):
-        pass
+        next_pg = response.xpath('//a[@class="nxt"]/@href').extract_first()
+        base_url = response.xpath('//base/@href').extract_first()
+        return Request(url=urljoin(base_url, next_pg)) if next_pg else None
