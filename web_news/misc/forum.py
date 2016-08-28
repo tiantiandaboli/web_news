@@ -67,6 +67,10 @@ class SpiderForum(Spider):
                         not self.filter.link_lastupdate(response.url, it['last_reply']):
                     np = response.meta.get('nextpage')
                     yield  np.replace(callback=self._parse_each_node)
+                if response.meta.get('nextpage'):
+                    self.logger.info(it.get('last_reply'))
+                    self.logger.info(self.filter.link_lastupdate(response.url, it['last_reply']))
+                    self.logger.info(response.meta.get('nextpage'))
 
     def parse_each_node(self, response):
         """
