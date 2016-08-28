@@ -57,6 +57,7 @@ class TongrenSpider(SpiderForum):
             yield item.load_item()
 
     def next_page(self, response):
-        next_pg = response.xpath('//a[@class="nxt"]/@href').extract_first()
-        base_url = response.xpath('//base/@href').extract_first()
-        return Request(url=urljoin(base_url, next_pg)) if next_pg else None
+        # next_pg = response.xpath('//a[@class="nxt"]/@href').extract_first()
+        # base_url = response.xpath('//base/@href').extract_first()
+        # return Request(url=urljoin(base_url, next_pg)) if next_pg else None
+        pass
