@@ -19,7 +19,7 @@ class TongrenSpider(SpiderForum):
 
     custom_settings = {
         'REDIRECT_ENABLED':True,
-        'DOWNLOAD_TIMEOUT':2,
+        # 'DOWNLOAD_TIMEOUT':2,
     }
 
     item_url_temp = 'http://www.daguizx.com/forum.php?mod=viewthread&tid=%(item_no)s&extra=page%%3D&page=%(page_no)s'
