@@ -56,18 +56,14 @@ class SpiderForum(Spider):
         return requests_it
 
     def _parse_each_item(self, response):
-        items = [i for i in self.parse_each_item(response)]
-        self.logger.info(str(items))
-        for it in items:
-            self.logger.info(str(items))
-            yield it
+        for it in self.parse_each_item(response):
+            # yield it
             # it may be item or request
             if isinstance(it, Item):
                 it = dict(it)
             if isinstance(it, dict):
                 if response.meta.get('nextpage') and \
-                        it.get('last_reply') and \
-                        not self.filter.link_lastupdate(response.url, it['last_reply']):
+                        it.get('last_reply') :
                     np = response.meta.get('nextpage')
                     yield  np.replace(callback=self._parse_each_node)
 

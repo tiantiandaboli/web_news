@@ -55,7 +55,6 @@ class TongrenSpider(SpiderForum):
             item = ItemLoader(item=FroumItem(), response=response)
             for k, v in iteminfo.items():
                 item.add_value(k, v)
-            self.logger.info("get item:%s", iteminfo)
             yield item.load_item()
 
     def next_page(self, response):
