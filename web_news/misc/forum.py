@@ -57,9 +57,9 @@ class SpiderForum(Spider):
 
     def _parse_each_item(self, response):
         items = [i for i in self.parse_each_item(response)]
-        self.logger(items)
+        self.logger(str(items))
         for it in items:
-            self.logger.info(it)
+            self.logger.info(str(items))
             yield it
             # it may be item or request
             if isinstance(it, Item):
