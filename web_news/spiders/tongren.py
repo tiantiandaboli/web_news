@@ -23,13 +23,12 @@ class TongrenSpider(SpiderForum):
         # 'DOWNLOAD_TIMEOUT':2,
     }
 
-    item_url_temp = 'http://www.daguizx.com/tongren/r%(item_no)s/'
-
     def parse_each_node(self, response):
+        base_url = response.xpath('//base/@href').extract_first()
         tbody_list = response.xpath('//tbody[re:test(@id, "normalthread_\d+")]')
         for i, tbody in enumerate(tbody_list):
-            item_no = tbody.xpath('descendant::td[@class="num"]/a/@href').re_first('\d+')
-            yield Request(url=self.item_url_temp%{'item_no':item_no})
+            url = tbody.xpath('descendant::td[@class="num"]/a/@href').extract_first()
+            yield Request(url=urljoin(base=base_url, url=url))
 
     def parse_each_item(self, response):
         ret = None
