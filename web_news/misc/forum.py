@@ -56,12 +56,9 @@ class SpiderForum(Spider):
         return requests_it
 
     def _parse_each_item(self, response):
-        self.logger.info("parse response from %s"%response.url)
         it = self.parse_each_item(response)
-        self.logger.info("parse response get %s" % it)
         # it may be item or request
         ret = []
-        self.logger.info("type of item: %s"%type(it))
         if isinstance(it, Item):
             it = dict(it)
             if response.meta.get('nextpage') and \

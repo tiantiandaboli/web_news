@@ -57,7 +57,6 @@ class TongrenSpider(SpiderForum):
             for k, v in iteminfo.items():
                 item.add_value(k, v)
             ret = item.load_item()
-        self.logger.info('parse response from %s, get result %s'%(response.url, ret))
         return ret
 
     def next_page(self, response):
