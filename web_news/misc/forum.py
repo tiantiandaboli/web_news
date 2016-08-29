@@ -62,10 +62,10 @@ class SpiderForum(Spider):
         if isinstance(it, Item):
             it = dict(it)
             if response.meta.get('nextpage') and \
-                    it.get('last_reply') :
+                    it.get('last_reply') and \
+                    not self.filter.link_lastupdate(it['url'], it['last_reply']):
                 np = response.meta.get('nextpage')
                 ret.append(np.replace(callback=self._parse_each_node))
-            self.logger.info("%s aaaaaaaaaaa %s"%(response.meta.get('nextpage'), it.get('last_reply')))
         else:
             if response.meta.get('nextpage'):
                 it.meta['nextpage'] = response.meta.get('nextpage')

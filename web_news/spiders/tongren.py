@@ -26,9 +26,6 @@ class TongrenSpider(SpiderForum):
     def parse_each_node(self, response):
         tbody_list = response.xpath('//tbody[re:test(@id, "normalthread_\d+")]')
         for i, tbody in enumerate(tbody_list):
-            # url = tbody.xpath('descendant::td[@class="num"]/a/@href').extract_first()
-            # base_url = response.xpath('//base/@href').extract_first()
-            # yield Request(url=urljoin(base_url, url))
             item_no = tbody.xpath('descendant::td[@class="num"]/a/@href').re_first('\d+')
             yield Request(url=self.item_url_temp%{'item_no':item_no, 'page_no':1})
 
