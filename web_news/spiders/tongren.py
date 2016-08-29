@@ -33,6 +33,7 @@ class TongrenSpider(SpiderForum):
             yield Request(url=self.item_url_temp%{'item_no':item_no, 'page_no':1})
 
     def parse_each_item(self, response):
+        ret = None
         if response.meta.get('iteminfo') == None:
             iteminfo = {}
             iteminfo['url'] = response.url
@@ -47,7 +48,7 @@ class TongrenSpider(SpiderForum):
             # yield Request(url=response.request.url+'?page=100000000', callback=self.parse_each_item, meta={'iteminfo':iteminfo})
             last_page = 'http://www.daguizx.com/forum.php?mod=redirect&tid=205457&goto=lastpost#lastpost'
             url = re.sub('tid=\d+', re.search(r'tid=\d+', response.url).group(), last_page)
-            return Request(url=url, callback=self.parse_each_item, meta={'iteminfo':iteminfo})
+            ret = Request(url=url, callback=self.parse_each_item, meta={'iteminfo':iteminfo})
         else:
             iteminfo = response.meta.get('iteminfo')
             iteminfo['last_reply'] = response.xpath('//em[re:test(@id, "authorposton\d+")]')[-1].xpath('text()').re_first('\d+-\d+-\d+\W\d+:\d+:\d+') \
@@ -55,7 +56,9 @@ class TongrenSpider(SpiderForum):
             item = ItemLoader(item=FroumItem(), response=response)
             for k, v in iteminfo.items():
                 item.add_value(k, v)
-            return item.load_item()
+            ret = item.load_item()
+        self.logger.info('parse response from %s, get result %s'%(response.url, ret))
+        return ret
 
     def next_page(self, response):
         next_pg = response.xpath('//a[@class="nxt"]/@href').extract_first()
