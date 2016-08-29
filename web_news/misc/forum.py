@@ -60,7 +60,7 @@ class SpiderForum(Spider):
         it = self.parse_each_item(response)
         self.logger.info("parse response get %s" % it)
         # it may be item or request
-        ret = [it]
+        ret = []
         self.logger.info("type of item: %s"%type(it))
         if isinstance(it, Item):
             it = dict(it)
@@ -68,6 +68,9 @@ class SpiderForum(Spider):
                     it.get('last_reply') :
                 np = response.meta.get('nextpage')
                 ret.append(np.replace(callback=self._parse_each_node))
+        else:
+            it = it.replace(callback=self._parse_each_item)
+        ret.append(it)
         return ret
 
     def parse_each_node(self, response):
