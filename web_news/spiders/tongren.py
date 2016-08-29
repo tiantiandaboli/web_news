@@ -8,6 +8,7 @@ from scrapy.loader import ItemLoader
 from web_news.items import FroumItem
 from web_news.misc.forum import SpiderForum
 
+import time
 
 class TongrenSpider(SpiderForum):
     name = "tongren"
@@ -43,6 +44,7 @@ class TongrenSpider(SpiderForum):
             iteminfo['website'] = self.website
             iteminfo['date'] = response.xpath('//em[re:test(@id, "authorposton\d+")]')[0].xpath('text()').re_first('\d+-\d+-\d+\W\d+:\d+:\d+') \
                                or response.xpath('//em[re:test(@id, "authorposton\d+")]')[0].xpath('span/@title').re_first('\d+-\d+-\d+\W\d+:\d+:\d+')
+            iteminfo['date'] = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.mktime(time.strptime(iteminfo['date'],'%Y-%m-%d %H:%M:%S'))))
             # yield Request(url=response.request.url+'?page=100000000', callback=self.parse_each_item, meta={'iteminfo':iteminfo})
             last_page = 'http://www.daguizx.com/forum.php?mod=viewthread&tid=252414#lastpost'
             url = re.sub('\d+', re.search(r'\d+', response.url).group(), last_page)
