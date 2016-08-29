@@ -45,7 +45,7 @@ class TongrenSpider(SpiderForum):
                                or response.xpath('//em[re:test(@id, "authorposton\d+")]')[0].xpath('span/@title').re_first('\d+-\d+-\d+\W\d+:\d+:\d+')
             # yield Request(url=response.request.url+'?page=100000000', callback=self.parse_each_item, meta={'iteminfo':iteminfo})
             last_page = 'http://www.daguizx.com/forum.php?mod=viewthread&tid=252414#lastpost'
-            url = re.sub('tid=\d+', re.search(r'tid=\d+', response.url).group(), last_page)
+            url = re.sub('\d+', re.search(r'\d+', response.url).group(), last_page)
             ret = Request(url=url, meta={'iteminfo':iteminfo})
         else:
             iteminfo = response.meta.get('iteminfo')
