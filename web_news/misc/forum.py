@@ -56,16 +56,17 @@ class SpiderForum(Spider):
         return requests_it
 
     def _parse_each_item(self, response):
-        for it in self.parse_each_item(response):
-            # yield it
-            # it may be item or request
-            if isinstance(it, Item):
-                it = dict(it)
-            if isinstance(it, dict):
-                if response.meta.get('nextpage') and \
-                        it.get('last_reply') :
-                    np = response.meta.get('nextpage')
-                    yield  np.replace(callback=self._parse_each_node)
+        it = self.parse_each_item(response)
+        # it may be item or request
+        ret = [it]
+        self.logger.info("type of item: %s"%type(it))
+        if isinstance(it, Item):
+            it = dict(it)
+            if response.meta.get('nextpage') and \
+                    it.get('last_reply') :
+                np = response.meta.get('nextpage')
+                ret.append(np.replace(callback=self._parse_each_node))
+        return ret
 
     def parse_each_node(self, response):
         """
