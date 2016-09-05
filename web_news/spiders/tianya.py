@@ -65,4 +65,6 @@ class TianyaSpider(SpiderForum):
         return ret
 
     def next_page(self, response):
-        pass
+        next_pg = response.xpath('//a[@class="u-btn "]/@href').re_first('/m/list\.jsp\?item=free\&nextid=\d+')
+        base_url = 'http://bbs.tianya.cn'
+        return Request(url=urljoin(base_url, next_pg)) if next_pg else None
