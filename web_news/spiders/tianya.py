@@ -25,7 +25,8 @@ class TianyaSpider(SpiderForum):
             if not sub_node[i].startswith('http'):
                 sub_node[i] = base_url+sub_node[i]
 
-        return [Request(url=i, callback=self._parse_each_node) for i in sub_node]
+        # return [Request(url=i, callback=self._parse_each_node) for i in sub_node]
+        return Request(url='http://bbs.tianya.cn/m/list-free-1.shtml', callback=self._parse_each_node)
 
     def parse_each_node(self, response):
         # self.logger.info(response.url)
@@ -42,7 +43,11 @@ class TianyaSpider(SpiderForum):
             iteminfo['view_num'] = response.xpath('//i[@class="iconfont icon-view"]/text()').extract_first().strip()
             iteminfo['reply_num'] = response.xpath('//i[@class="iconfont icon-reply"]/text()').extract_first().strip()
             iteminfo['title'] = response.xpath('//h1/text()').extract_first()
-            iteminfo['content'] = ''.join(response.xpath('//div[@class="bd"]')[0].xpath('descendant-or-self::text()').extract())
+            try:
+                iteminfo['content'] = ''.join(response.xpath('//div[@class="bd"]')[0].xpath('descendant-or-self::text()').extract())
+            except Exception as e:
+                iteminfo['content'] = ''
+
             iteminfo['collection_name'] = self.name
             iteminfo['website'] = self.website
             iteminfo['date'] = response.xpath('//p[@class="time fc-gray"]/text()')[0].extract()
