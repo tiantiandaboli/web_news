@@ -57,6 +57,7 @@ class SpiderForum(Spider):
 
     def _parse_each_item(self, response):
         it = self.parse_each_item(response)
+        if it==None: return
         # it may be item or request
         ret = []
         if isinstance(it, Item):

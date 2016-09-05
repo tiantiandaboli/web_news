@@ -25,7 +25,7 @@ class TianyaSpider(SpiderForum):
             if not sub_node[i].startswith('http'):
                 sub_node[i] = base_url+sub_node[i]
 
-        return [Request(url=i, callback=self._parse_each_node) for i in sub_node][:10]
+        return [Request(url=i, callback=self._parse_each_node) for i in sub_node][:1]
 
     def parse_each_node(self, response):
         # self.logger.info(response.url)
