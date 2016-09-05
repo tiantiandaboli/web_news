@@ -17,16 +17,19 @@ class TianyaSpider(SpiderForum):
     start_urls = (
         'http://bbs.tianya.cn/m/block.jsp',
     )
-
+    watch = ['b_minsheng',
+             ]
     def parse(self, response):
-        sub_node = response.xpath('//a[re:test(@href, "list")]/@href').extract()
+        sub_node = []
+        for w in self.watch:
+            sub_node += response.xpath('//div[@id="%s"]/descendant-or-self::a[re:test(@href, "list")]/@href'%w).extract()
         base_url = 'http://bbs.tianya.cn'
         for i in xrange(len(sub_node)):
             if not sub_node[i].startswith('http'):
                 sub_node[i] = base_url+sub_node[i]
 
-        # return [Request(url=i, callback=self._parse_each_node) for i in sub_node]
-        return Request(url='http://bbs.tianya.cn/m/list-free-1.shtml', callback=self._parse_each_node)
+        return [Request(url=i, callback=self._parse_each_node) for i in sub_node]
+        # return Request(url='http://bbs.tianya.cn/m/list-free-1.shtml', callback=self._parse_each_node)
 
     def parse_each_node(self, response):
         # self.logger.info(response.url)
