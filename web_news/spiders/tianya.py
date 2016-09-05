@@ -25,16 +25,16 @@ class TianyaSpider(SpiderForum):
             if not sub_node[i].startswith('http'):
                 sub_node[i] = base_url+sub_node[i]
 
-        return [Request(url=i, callback=self._parse_each_node) for i in sub_node][:1]
+        return [Request(url=i, callback=self._parse_each_node) for i in sub_node]
 
     def parse_each_node(self, response):
         # self.logger.info(response.url)
         base_url = 'http://bbs.tianya.cn'
-        posts = [Request(url=base_url+i) for i in response.xpath('//ul[@class="post-list"]/li/a[re:test(@href, "post")]/@href').extract()][:1]
+        posts = [Request(url=base_url+i) for i in response.xpath('//ul[@class="post-list"]/li/a[re:test(@href, "post")]/@href').extract()]
         return posts
 
     def parse_each_item(self, response):
-        self.logger.info(response.url)
+        self.logger.debug(response.url)
 
     def next_page(self, response):
         pass
