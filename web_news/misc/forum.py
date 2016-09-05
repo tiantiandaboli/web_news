@@ -16,7 +16,7 @@ class SpiderForum(RedisSpider):
     def start_requests(self):
         assert self.start_urls != None, "start url is none"
         for url in self.start_urls:
-            return Request(url=url, callback=self.parse)
+            yield Request(url=url, callback=self.parse)
 
     def compete_key(self):
         self.server = get_redis_from_settings(self.settings)
