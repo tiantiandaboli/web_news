@@ -57,7 +57,7 @@ class TianyaSpider(SpiderForum):
             ret = Request(url=url, meta={'iteminfo':iteminfo})
         else:
             iteminfo = response.meta.get('iteminfo')
-            iteminfo['last_reply'] = iteminfo['date'] = response.xpath('//p[@class="time fc-gray"]/text()')[-1].extract()
+            iteminfo['last_reply'] = response.xpath('//p[@class="time fc-gray"]/text()')[-1].extract()
             item = ItemLoader(item=FroumItem(), response=response)
             for k, v in iteminfo.items():
                 item.add_value(k, v)
