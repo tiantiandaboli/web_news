@@ -53,7 +53,8 @@ class SpiderForum(Spider):
         requests_it = [i.replace(callback=self._parse_each_item) for i in self.parse_each_node(response)]
         np = self.next_page(response)
         requests_it[-1].meta['nextpage'] = np
-        return requests_it
+        for i in requests_it:
+            yield i
 
     def _parse_each_item(self, response):
         it = self.parse_each_item(response)
