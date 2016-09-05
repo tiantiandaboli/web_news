@@ -5,18 +5,10 @@ from scrapy import Item
 from scrapy import Request
 from scrapy import Spider
 from scrapy_redis import get_redis_from_settings
-from scrapy_redis.spiders import RedisSpider
 
 from web_news.misc.filter import Filter
 
-class SpiderForum(RedisSpider):
-
-    start_urls = None
-
-    def start_requests(self):
-        assert self.start_urls != None, "start url is none"
-        for url in self.start_urls:
-            yield Request(url=url, callback=self.parse)
+class SpiderForum(Spider):
 
     def compete_key(self):
         self.server = get_redis_from_settings(self.settings)
