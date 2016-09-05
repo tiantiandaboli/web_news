@@ -5,10 +5,11 @@ from scrapy import Item
 from scrapy import Request
 from scrapy import Spider
 from scrapy_redis import get_redis_from_settings
+from scrapy_redis.spiders import RedisSpider
 
 from web_news.misc.filter import Filter
 
-class SpiderForum(Spider):
+class SpiderForum(RedisSpider):
 
     def compete_key(self):
         self.server = get_redis_from_settings(self.settings)
