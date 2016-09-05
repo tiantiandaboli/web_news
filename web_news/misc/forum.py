@@ -11,6 +11,10 @@ from web_news.misc.filter import Filter
 
 class SpiderForum(RedisSpider):
 
+    custom_settings = {
+        'REDIS_START_URLS_AS_SET':True,
+    }
+
     def compete_key(self):
         self.server = get_redis_from_settings(self.settings)
         self.redis_compete = self.settings.get('REDIS_COMPETE') % {'spider': self.name}
