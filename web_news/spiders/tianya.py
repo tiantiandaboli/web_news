@@ -28,7 +28,8 @@ class TianyaSpider(SpiderForum):
             if not sub_node[i].startswith('http'):
                 sub_node[i] = base_url+sub_node[i]
 
-        return [Request(url=i, callback=self._parse_each_node) for i in sub_node]
+        for i in sub_node:
+            yield Request(url=i, callback=self._parse_each_node) 
         # return Request(url='http://bbs.tianya.cn/m/list-free-1.shtml', callback=self._parse_each_node)
 
     def parse_each_node(self, response):
