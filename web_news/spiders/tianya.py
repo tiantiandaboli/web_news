@@ -41,7 +41,7 @@ class TianyaSpider(SpiderForum):
     def parse(self, response):
         sub_node = []
         for w in self.watch:
-            sub_node += response.xpath('//div[contain(@id, "%s")]/descendant-or-self::a[re:test(@href, "list")]/@href'%w).extract()
+            sub_node += response.xpath('//div[contains(@id, "%s")]/descendant-or-self::a[re:test(@href, "list")]/@href'%w).extract()
         base_url = 'http://bbs.tianya.cn'
         for i in xrange(len(sub_node)):
             if not sub_node[i].startswith('http'):
