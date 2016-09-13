@@ -13,6 +13,7 @@ class CnetnewsSpider(SpiderRedis):
     name = 'cnetnews'
     allowed_domains = ['cnetnews.com.cn']
     start_urls = ['http://www.cnetnews.com.cn/']
+    website = u'CNET科技资讯网'
 
     rules = (
         Rule(LinkExtractor(allow=r'\d+/\d+/\d+\.shtml'), callback='parse_item', follow=False),
