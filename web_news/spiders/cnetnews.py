@@ -31,7 +31,7 @@ class CnetnewsSpider(SpiderRedis):
             date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.mktime(time.strptime(date, '%Y/%m%d'))))
             l.add_value('date', date)
             l.add_value('source', 'CNET科技资讯网')
-            classname = ['qu_content_div', 'qu_ocn', 'qu_wenzhang_con_div']
+            classname = ['qu_content_div', 'qu_ocn', 'qu_wenzhang_con_div', 'text1']
             content = ''
             for c in classname:
                 content += ''.join(response.xpath('//div[@class="%s"]/descendant-or-self::text()'%c).extract())
