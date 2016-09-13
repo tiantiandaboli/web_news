@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import re
+
 import scrapy
 import time
 from scrapy.linkextractors import LinkExtractor
@@ -24,13 +26,15 @@ class CnetnewsSpider(SpiderRedis):
     def parse_item(self, response):
         l = ItemLoader(item=SpiderItem(), response=response)
         try:
-            l.add_value('title', response.xpath('//h1[@class="foucs_title"]/text()').extract_first())
-            date = response.xpath('//div[@class="qu_zuo"]/descendant-or-self::text()').re_first(u'\d+年\d+月\d+日')
-            date = date.replace(u'年', '-').replace(u'月', '-').replace(u'日', '')
-            date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.mktime(time.strptime(date, '%Y-%m-%d'))))
+            l.add_value('title', response.xpath('//title/text()').extract_first())
+            date = re.search(r'\d{4}/\d{4}', response.url).group()
+            date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.mktime(time.strptime(date, '%Y/%m%d'))))
             l.add_value('date', date)
             l.add_value('source', 'CNET科技资讯网')
-            l.add_value('content', ''.join(response.xpath('//div[@class="qu_ocn"]/descendant-or-self::text()').extract()))
+            content = ''.join(response.xpath('//div[@class="qu_ocn"]/descendant-or-self::text()').extract())
+            if content == '' or None:
+                self.logger.info(response.url)
+            l.add_value('content', content)
         except Exception as e:
             self.logger.error('error url: %s error msg: %s' % (response.url, e))
             l = ItemLoader(item=SpiderItem(), response=response)
