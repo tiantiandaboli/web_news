@@ -35,8 +35,6 @@ class CnetnewsSpider(SpiderRedis):
             content = ''
             for c in classname:
                 content += ''.join(response.xpath('//div[@class="%s"]/descendant-or-self::text()'%c).extract())
-            if content == '' or None:
-                self.logger.info(response.url)
             l.add_value('content', content)
         except Exception as e:
             self.logger.error('error url: %s error msg: %s' % (response.url, e))
