@@ -18,7 +18,7 @@ class CitnewsSpider(SpiderRedis):
     website = u'citnews科技资讯网'
 
     rules = (
-        Rule(LinkExtractor(allow=r'201\d/\d+/\d+\.shtml'), callback='parse_item', follow=False),
+        Rule(LinkExtractor(allow=r'201\d+/\d+\.shtml'), callback='parse_item', follow=False),
         Rule(LinkExtractor(allow=r'citnews'), follow=True),
     )
 
