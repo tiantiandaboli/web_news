@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
-import re
-
 import scrapy
-import time
 from scrapy.linkextractors import LinkExtractor
 from scrapy.loader import ItemLoader
 from scrapy.spiders import CrawlSpider, Rule
@@ -11,31 +8,29 @@ from web_news.items import SpiderItem
 from web_news.misc.spiderredis import SpiderRedis
 
 
-class CnetnewsSpider(SpiderRedis):
-    name = 'cnetnews'
-    allowed_domains = ['cnetnews.com.cn']
-    start_urls = ['http://www.cnetnews.com.cn/']
-    website = u'CNET科技资讯网'
+class KejixunSpider(SpiderRedis):
+    name = 'kejixun'
+    allowed_domains = ['kejixun.com']
+    start_urls = ['http://www.kejixun.com/']
+    website = u'科技讯'
 
     rules = (
-        # 只要2010年以后的
-        Rule(LinkExtractor(allow=r'201\d+/\d+'), callback='parse_item', follow=False),
-        Rule(LinkExtractor(allow=r'list'), follow=True),
-
+        Rule(LinkExtractor(allow=r'article/\d+/\d+'), callback='parse_item', follow=False),
+        Rule(LinkExtractor(allow=r'kejixun'), follow=True),
     )
 
     def parse_item(self, response):
         l = ItemLoader(item=SpiderItem(), response=response)
         try:
             l.add_value('title', response.xpath('//title/text()').extract_first())
-            date = re.search(r'\d{4}/\d{4}', response.url).group()
-            date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.mktime(time.strptime(date, '%Y/%m%d'))))
-            l.add_value('date', date)
-            l.add_value('source', 'CNET科技资讯网')
-            classname = ['qu_content_div', 'qu_ocn', 'qu_wenzhang_con_div', 'text1', 'bin_pic']
+            l.add_value('date', response.xpath('//div[@class="titleInfo"]/span[1]/text()').extract_first())
+            l.add_value('source', self.website)
+            classname = ['artibody']
             content = ''
             for c in classname:
-                content += ''.join(response.xpath('//div[@class="%s"]/descendant-or-self::text()'%c).extract())
+                content += ''.join(response.xpath('//div[@id="%s"]/descendant-or-self::text()'%c).extract())
+            # if content == None or content.strip() == '':
+            #     self.logger.info(response.url)
             l.add_value('content', content)
         except Exception as e:
             self.logger.error('error url: %s error msg: %s' % (response.url, e))

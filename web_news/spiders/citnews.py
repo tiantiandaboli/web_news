@@ -32,8 +32,8 @@ class CitnewsSpider(SpiderRedis):
             content = ''
             for c in classname:
                 content += ''.join(response.xpath('//div[@class="%s"]/descendant-or-self::text()'%c).extract())
-            if content == None or content.strip() == '':
-                self.logger.info(response.url)
+            # if content == None or content.strip() == '':
+            #     self.logger.info(response.url)
             l.add_value('content', content)
         except Exception as e:
             self.logger.error('error url: %s error msg: %s' % (response.url, e))
