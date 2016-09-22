@@ -14,6 +14,8 @@ from web_news.misc.spiderredis import SpiderRedis
 def process_links(links):
     ret = []
     for link in links:
+        if link.count('%0A') > 1:
+            print link.split('%0A')
         link = link.split('%0A')
         for l in link:
             if re.search(r'\d{8}/\d+_\d+.shtml', l) != None:
