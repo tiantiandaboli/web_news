@@ -3,6 +3,8 @@ import re
 
 import scrapy
 import time
+
+from scrapy.link import Link
 from scrapy.linkextractors import LinkExtractor
 from scrapy.loader import ItemLoader
 from scrapy.spiders import CrawlSpider, Rule
@@ -14,12 +16,13 @@ from web_news.misc.spiderredis import SpiderRedis
 def process_links(links):
     ret = []
     for link in links:
-        if link.count('%0A') > 1:
-            print link.split('%0A')
-        link = link.split('%0A')
-        for l in link:
+        url = link.url
+        urls = url.split('%0A')
+        if len(urls) > 1:
+            print url
+        for l in urls:
             if re.search(r'\d{8}/\d+_\d+.shtml', l) != None:
-                ret += l
+                ret += Link(url=l, text=link.text, fragment=link.fragment, nofollow=link.nofollow)
     return ret
 
 class IfengSpider(SpiderRedis):
