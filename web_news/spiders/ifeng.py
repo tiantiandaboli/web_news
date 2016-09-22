@@ -24,8 +24,8 @@ class IfengSpider(SpiderRedis):
 
     def gettitle(self, response):
         title = ''
-        title += response.xpath('//h1[@id="artical_topic"]/text()').extract_first()
-        title += response.xpath('//div[@class="yc_tit"]/h1/text()').extract_first()
+        title += response.xpath('//h1[@id="artical_topic"]/text()').extract_first() or ''
+        title += response.xpath('//div[@class="yc_tit"]/h1/text()').extract_first() or ''
 
         assert title != '', 'title is null, %s'%response.url
         return title
