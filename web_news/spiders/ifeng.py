@@ -34,19 +34,20 @@ class IfengSpider(SpiderRedis):
 
     def getdate(self, response):
         date = None
-        t = response.xpath('//span[@itemprop="datePublished"]/text()').extract_first()
-        if t:
-            date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.mktime(time.strptime(t.strip(), u'%Y年%m月%d日 %H:%M'))))
+        t = ''
+        t += response.xpath('//span[@itemprop="datePublished"]/text()').extract_first() or ''
+        t += response.xpath('//div[@class="yc_tit"]/p/span/text()').extract_first() or ''
+        t = t.strip()
+        pa = [u'%Y年%m月%d日 %H:%M', u'%Y-%m-%d %H:%M', u'%Y-%m-%d %H:%M:%S']
+        for p in pa:
+            try:
+                date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.mktime(time.strptime(t.strip(), p))))
+            except Exception, e:
+                # raise e
+                pass
+            else:
+                break
 
-        if date == None:
-            t = response.xpath('//div[@class="yc_tit"]/p/span/text()').extract_first()
-            if t:
-                t = t.strip()
-                if t.count(':')==1:
-                    t += ':00'
-                date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.mktime(time.strptime(t, u'%Y-%m-%d %H:%M'))))
-
-        # assert date != None, 'date is null, %s'%response.url
         if date == None:
             t = re.search(r'\d{8}', response.url).group()
             date = date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.mktime(time.strptime(t.strip(), '%Y%m%d'))))
