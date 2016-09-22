@@ -69,7 +69,9 @@ class IfengSpider(SpiderRedis):
         classname = [{'name':'id',
                       'value':'main_content'},
                      {'name':'class',
-                      'value':'yc_con_txt'},]
+                      'value':'yc_con_txt'},
+                     {'name':'class',
+                      'value':'wrapIphone AtxtType01'}]
         content = ''
         for c in classname:
             content += ''.join(response.xpath('//div[@%(name)s="%(value)s"]/descendant-or-self::text()'%c).extract())
