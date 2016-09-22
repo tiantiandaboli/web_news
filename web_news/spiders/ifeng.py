@@ -27,7 +27,9 @@ class IfengSpider(SpiderRedis):
         title += response.xpath('//h1[@id="artical_topic"]/text()').extract_first() or ''
         title += response.xpath('//div[@class="yc_tit"]/h1/text()').extract_first() or ''
 
-        assert title != '', 'title is null, %s'%response.url
+        # assert title != '', 'title is null, %s'%response.url
+        if title == '':
+            title += response.xpath('//title/text()').extract_first()
         return title
 
     def getdate(self, response):
@@ -38,9 +40,13 @@ class IfengSpider(SpiderRedis):
 
         if date == None:
             t = response.xpath('//div[@class="yc_tit"]/p/span/text()').extract_first()
-            date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.mktime(time.strptime(t.strip(), u'%Y-%m-%d %H:%M'))))
+            if t:
+                date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.mktime(time.strptime(t.strip(), u'%Y-%m-%d %H:%M'))))
 
-        assert date != None, 'date is null, %s'%response.url
+        # assert date != None, 'date is null, %s'%response.url
+        if date == None:
+            t = re.search(r'\d{8}', response.url)
+            date = date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.mktime(time.strptime(t.strip(), '%Y%m%d'))))
         return date
 
     def getcontent(self, response):
