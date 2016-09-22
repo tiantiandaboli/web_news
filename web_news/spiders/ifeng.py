@@ -59,7 +59,7 @@ class IfengSpider(SpiderRedis):
         l = ItemLoader(item=SpiderItem(), response=response)
         try:
             for attr in ['title', 'date', 'content']:
-                function = getattr(self, attr, None)
+                function = getattr(self, 'get'+attr, None)
                 if function:
                     l.add_value('attr', function(response))
                 else:
