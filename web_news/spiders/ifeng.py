@@ -11,6 +11,15 @@ from web_news.items import SpiderItem
 from web_news.misc.spiderredis import SpiderRedis
 
 
+def process_links(links):
+    ret = []
+    for link in links:
+        link = link.split('%0A')
+        for l in link:
+            if re.search(r'\d{8}/\d+_\d+.shtml', l) != None:
+                ret += l
+    return ret
+
 class IfengSpider(SpiderRedis):
     name = 'ifeng'
     allowed_domains = ['news.ifeng.com', 'tech.ifeng.com', 'finance.ifeng.com']
@@ -18,17 +27,9 @@ class IfengSpider(SpiderRedis):
     website = u'凤凰网'
 
     rules = (
-        Rule(LinkExtractor(allow=r'\d{8}/\d+_\d+.shtml'), callback='parse_item', follow=False),
+        Rule(LinkExtractor(allow=r'\d{8}/\d+_\d+.shtml'), callback='parse_item', follow=False, process_links=process_links),
         Rule(LinkExtractor(allow=r'ifeng'), follow=True),
     )
-    def process_links(self, links):
-        ret = []
-        for link in links:
-            link = link.split('%0A')
-            for l in link:
-                if re.search(r'\d{8}/\d+_\d+.shtml', l) != None:
-                    ret += l
-        return ret
 
     def gettitle(self, response):
         title = ''
