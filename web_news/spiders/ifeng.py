@@ -45,7 +45,7 @@ class IfengSpider(SpiderRedis):
 
         # assert date != None, 'date is null, %s'%response.url
         if date == None:
-            t = re.search(r'\d{8}', response.url)
+            t = re.search(r'\d{8}', response.url).group()
             date = date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.mktime(time.strptime(t.strip(), '%Y%m%d'))))
         return date
 
