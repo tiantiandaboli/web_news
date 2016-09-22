@@ -18,11 +18,9 @@ def process_links(links):
     for link in links:
         url = link.url
         urls = url.split('%0A')
-        if len(urls) > 1:
-            print url
         for l in urls:
             if re.search(r'\d{8}/\d+_\d+.shtml', l) != None:
-                ret += Link(url=l, text=link.text, fragment=link.fragment, nofollow=link.nofollow)
+                ret.append(Link(url=l, text=link.text, fragment=link.fragment, nofollow=link.nofollow))
     return ret
 
 class IfengSpider(SpiderRedis):
