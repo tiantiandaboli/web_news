@@ -21,6 +21,14 @@ class IfengSpider(SpiderRedis):
         Rule(LinkExtractor(allow=r'\d{8}/\d+_\d+.shtml'), callback='parse_item', follow=False),
         Rule(LinkExtractor(allow=r'ifeng'), follow=True),
     )
+    def process_links(self, links):
+        ret = []
+        for link in links:
+            link = link.split('%0A')
+            for l in link:
+                if re.search(r'\d{8}/\d+_\d+.shtml', l) != None:
+                    ret += l
+        return ret
 
     def gettitle(self, response):
         title = ''
