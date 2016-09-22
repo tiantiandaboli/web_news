@@ -22,25 +22,49 @@ class IfengSpider(SpiderRedis):
         Rule(LinkExtractor(allow=r'ifeng'), follow=True),
     )
 
+    def gettitle(self, response):
+        title = ''
+        title = response.xpath('//h1[@id="artical_topic"]/text()').extract_first()
+        title += response.xpath('//div[@class="yc_tit"]/h1/text()').extract_first()
+
+        assert title != '', 'title is null, %s'%response.url
+        return title
+
+    def getdate(self, response):
+        date = None
+        t = response.xpath('//span[@itemprop="datePublished"]/text()').extract_first()
+        if t:
+            date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.mktime(time.strptime(t.strip(), u'%Y年%m月%d日 %H:%M'))))
+
+        if date == None:
+            t = response.xpath('//div[@class="yc_tit"]/p/span/text()').extract_first()
+            date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.mktime(time.strptime(t.strip(), u'%Y-%m-%d %H:%M'))))
+
+        assert date != None, 'date is null, %s'%response.url
+        return date
+
+    def getcontent(self, response):
+        classname = [{'name':'id',
+                      'value':'main_content'},
+                     {'name':'class',
+                      'value':'yc_con_txt'},]
+        content = ''
+        for c in classname:
+            content += ''.join(response.xpath('//div[@%(name)s="%(value)s"]/descendant-or-self::text()'%c).extract())
+
+        assert content != '', 'content is null, %s'%response.url
+        return content
+
     def parse_item(self, response):
         l = ItemLoader(item=SpiderItem(), response=response)
         try:
-            title = response.xpath('//h1[@id="artical_topic"]/text()').extract_first()
-            if title == None:
-                self.logger.info("title is null, url:%s"%response.url)
-            l.add_value('title', title)
-            date = response.xpath('//span[@itemprop="datePublished"]/text()').extract_first()
-            if date == None:
-                self.logger.info("date is null, url:%s"%response.url)
-            date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.mktime(time.strptime(date, u'%Y年%m月%d日 %H:%M'))))
-            l.add_value('date', date)
-            classname = ['main_content']
-            content = ''
-            for c in classname:
-                content += ''.join(response.xpath('//div[@id="%s"]/descendant-or-self::text()'%c).extract())
-            if content == None or content.strip() == '':
-                self.logger.info("content is null, url:%s"%response.url)
-            l.add_value('content', content)
+            for attr in ['title', 'date', 'content']:
+                function = getattr(self, attr, None)
+                if function:
+                    l.add_value('attr', function(response))
+                else:
+                    self.logger.error('no method for %s'%attr)
+
         except Exception as e:
             self.logger.error('error url: %s error msg: %s' % (response.url, e))
             l = ItemLoader(item=SpiderItem(), response=response)
