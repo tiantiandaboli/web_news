@@ -41,7 +41,10 @@ class IfengSpider(SpiderRedis):
         if date == None:
             t = response.xpath('//div[@class="yc_tit"]/p/span/text()').extract_first()
             if t:
-                date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.mktime(time.strptime(t.strip(), u'%Y-%m-%d %H:%M'))))
+                t = t.strip()
+                if t.count(':')==1:
+                    t += ':00'
+                date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.mktime(time.strptime(t, u'%Y-%m-%d %H:%M'))))
 
         # assert date != None, 'date is null, %s'%response.url
         if date == None:
@@ -58,7 +61,7 @@ class IfengSpider(SpiderRedis):
         for c in classname:
             content += ''.join(response.xpath('//div[@%(name)s="%(value)s"]/descendant-or-self::text()'%c).extract())
 
-        assert content != '', 'content is null, %s'%response.url
+        # assert content != '', 'content is null, %s'%response.url
         return content
 
     def parse_item(self, response):
