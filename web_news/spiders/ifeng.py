@@ -61,7 +61,7 @@ class IfengSpider(SpiderRedis):
             for attr in ['title', 'date', 'content']:
                 function = getattr(self, 'get'+attr, None)
                 if function:
-                    l.add_value('attr', function(response))
+                    l.add_value(attr, function(response))
                 else:
                     self.logger.error('no method for %s'%attr)
 
