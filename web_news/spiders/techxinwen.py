@@ -39,7 +39,7 @@ class TechxinwenSpider(SpiderRedis):
 
     def gettitle(self, response):
         title = ''
-        title += ''.join(response.xpath('//div[@class="title"]/descendant-or-self::text()').extract())
+        title += ''.join(response.xpath('//div[@class="viewbox"]/descendant-or-self::div[@class="title"]/descendant-or-self::text()').extract())
 
         # assert title != '', 'title is null, %s'%response.url
         if title == '':
