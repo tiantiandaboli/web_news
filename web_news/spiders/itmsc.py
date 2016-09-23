@@ -43,7 +43,7 @@ class itmscSpider(SpiderRedis):
         t += response.xpath('//div[@class="cc_l"]/descendant-or-self::div[@class="arc_sc"]/descendant-or-self::text()').re_first(r'\d+-\d+-\d+\W\d+:\d+')
         p = '%Y-%m-%d %H:%M'
         date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.mktime(time.strptime(t.strip(), p))))
-        return t
+        return date
 
     def getcontent(self, response):
         content = ''.join(response.xpath('//div[@class="cc_l"]/descendant-or-self::div[@class="arc_body"]/descendant-or-self::text()').extract())
