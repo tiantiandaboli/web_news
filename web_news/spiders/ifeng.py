@@ -19,7 +19,9 @@ def process_links(links):
         url = link.url
         urls = url.split('%0A')
         for l in urls:
-            if re.search(r'\d{8}/\d+_\d+.shtml', l) != None:
+            # 只找2010年以后的
+            if re.search(r'201{5}/\d+_\d+.shtml', l) != None:
+
                 ret.append(Link(url=l, text=link.text, fragment=link.fragment, nofollow=link.nofollow))
     return ret
 
