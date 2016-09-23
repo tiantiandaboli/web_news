@@ -29,7 +29,7 @@ def process_links(links):
 class TechxinwenSpider(SpiderRedis):
     name = 'techxinwen'
     allowed_domains = ['www.techxinwen.com']
-    start_urls = ['http://www.ifeng.com/']
+    start_urls = ['http://www.techxinwen.com/']
     website = u'科技资讯'
 
     rules = (
