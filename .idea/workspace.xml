@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5972e95d-407b-4c2a-84ee-e60dc70c4003" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web_news/spiders/SinaSpider.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web_news/spiders/zhihuTopic.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web_news/items.py" afterPath="$PROJECT_DIR$/web_news/items.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web_news/spiders/sciencenet.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="web_news.iws" />
@@ -56,7 +54,7 @@
       <file leaf-file-name="settings.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web_news/settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="2012" max-vertical-offset="2688">
+            <state vertical-scroll-proportion="0.0" vertical-offset="2331" max-vertical-offset="2688">
               <caret line="111" column="21" selection-start-line="111" selection-start-column="21" selection-end-line="111" selection-end-column="21" />
               <folding />
             </state>
@@ -105,13 +103,25 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="zhihuTopic.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="zhihuTopic.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web_news/spiders/zhihuTopic.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.59555554" vertical-offset="1236" max-vertical-offset="3486">
+            <state vertical-scroll-proportion="0.0" vertical-offset="1236" max-vertical-offset="3486">
               <caret line="78" column="78" selection-start-line="78" selection-start-column="78" selection-end-line="78" selection-end-column="78" />
               <folding>
                 <element signature="e#12#61#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="sciencenet.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/web_news/spiders/sciencenet.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.71555555" vertical-offset="0" max-vertical-offset="1428">
+              <caret line="23" column="12" selection-start-line="23" selection-start-column="8" selection-end-line="23" selection-end-column="12" />
+              <folding>
+                <element signature="e#24#55#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -165,6 +175,7 @@
         <option value="$PROJECT_DIR$/web_news/spiders/SinaSpider.py" />
         <option value="$PROJECT_DIR$/web_news/items.py" />
         <option value="$PROJECT_DIR$/web_news/spiders/zhihuTopic.py" />
+        <option value="$PROJECT_DIR$/web_news/spiders/sciencenet.py" />
       </list>
     </option>
   </component>
@@ -197,6 +208,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -249,7 +261,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -409,7 +420,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1456" height="876" extended-state="6" />
+    <frame x="-8" y="-8" width="1456" height="876" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -456,13 +467,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://D:/Python34/Lib/site-packages/scrapy_redis/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="336">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web_news/spiders/gywb.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1365">
@@ -740,7 +744,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="64" max-vertical-offset="945">
           <caret line="10" column="28" selection-start-line="10" selection-start-column="28" selection-end-line="10" selection-end-column="28" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -824,10 +827,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/web_news/spiders/zhihuTopic.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.59555554" vertical-offset="1236" max-vertical-offset="3486">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1236" max-vertical-offset="3486">
           <caret line="78" column="78" selection-start-line="78" selection-start-column="78" selection-end-line="78" selection-end-column="78" />
           <folding>
             <element signature="e#12#61#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web_news/spiders/sciencenet.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.71555555" vertical-offset="0" max-vertical-offset="1428">
+          <caret line="23" column="12" selection-start-line="23" selection-start-column="8" selection-end-line="23" selection-end-column="12" />
+          <folding>
+            <element signature="e#24#55#0" expanded="true" />
           </folding>
         </state>
       </provider>
