@@ -7,31 +7,26 @@ from scrapy.spiders import CrawlSpider, Rule
 from web_news.items import SpiderItem
 from web_news.misc.spiderredis import SpiderRedis
 
-
-class KejixunSpider(SpiderRedis):
-    name = 'kejixun'
-    allowed_domains = ['kejixun.com']
-    start_urls = ['http://www.kejixun.com/']
-    website = u'科技讯'
+class A21cnSpider(SpiderRedis):
+    name = '21cn'
+    allowed_domains = ['news.21cn.com']
+    start_urls = ['http://news.21cn.com/']
+    website = u'21CN网'
 
     rules = (
-        Rule(LinkExtractor(allow=r'article/\d+/\d+'), callback='parse_item', follow=False),
-        Rule(LinkExtractor(allow=r'kejixun'), follow=True),
+        Rule(LinkExtractor(allow=r'(\d){4}/(\d){4}/(\d){2}/\d+.shtml'), callback='parse_item', follow=False),
+        Rule(LinkExtractor(allow=r'domestic/'), follow=True),
+        Rule(LinkExtractor(allow=r'social//'), follow=True),
     )
+
 
     def parse_item(self, response):
         l = ItemLoader(item=SpiderItem(), response=response)
         try:
-            l.add_value('title', response.xpath('//title/text()').extract_first())
-            l.add_value('date', response.xpath('//div[@class="titleInfo"]/span[1]/text()').extract_first())
-            l.add_value('source', self.website)
-            classname = ['artibody']
-            content = ''
-            for c in classname:
-                content += ''.join(response.xpath('//div[@id="%s"]/descendant-or-self::text()'%c).extract())
-            # if content == None or content.strip() == '':
-            #     self.logger.info(response.url)
-            l.add_value('content', content)
+            l.add_value('title', response.xpath('//title/text()').extract_first() or '')
+            l.add_value('date', response.xpath('//span[@class="pubTime"]/text()').extract_first())
+            l.add_value('source', response.xpath('//a[@rel="nofollow"]/text()').extract_first())
+            l.add_value('content', ''.join(response.xpath('//div[@id="article_text"]/descendant-or-self::p/text()').extract()))
         except Exception as e:
             self.logger.error('error url: %s error msg: %s' % (response.url, e))
             l = ItemLoader(item=SpiderItem(), response=response)
