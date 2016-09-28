@@ -87,4 +87,3 @@ class Gyrlzyspider(Spider):
             l.add_value('url', response.url)
             l.add_value('collection_name', self.name)
             l.add_value('website', self.website)
-            yield l.load_item()

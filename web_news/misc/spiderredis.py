@@ -69,3 +69,4 @@ class SpiderRedis(CrawlSpider):
         else:
             return
 
+

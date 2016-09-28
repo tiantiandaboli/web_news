@@ -158,4 +158,3 @@ class ZhihuTopicSpider(SpiderRedis):
                 answer_item['website'] = self.website
 
                 yield answer_item
-            offset += page_size

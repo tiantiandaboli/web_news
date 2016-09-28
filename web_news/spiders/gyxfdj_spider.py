@@ -1,23 +1,16 @@
 # -*- coding: utf-8 -*-
-from scrapy.spiders import Spider
+from web_news.misc.spiderredis import SpiderRedis
 from scrapy.http import FormRequest, Request
 from web_news.items import SpiderItem
 import time
-from web_news.misc.filter import Filter
 from urlparse import urljoin
 from scrapy.loader import ItemLoader
 
 
-class GyxfdjSpider(Spider):
+class GyxfdjSpider(SpiderRedis):
     name = 'gyxfdj'
     website = u'息烽县党建网'
     allowed_domains = ['gyxfdj.gov.cn']
-
-    @classmethod
-    def from_crawler(cls, crawler, *args, **kwargs):
-        spider = super(GyxfdjSpider, cls).from_crawler(crawler, *args, **kwargs)
-        spider.filter = Filter.from_crawler(spider.crawler, spider.name)
-        return spider
 
     def start_requests(self):
         type_ids = list(range(3, 12))

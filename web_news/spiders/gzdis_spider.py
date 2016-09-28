@@ -1,16 +1,15 @@
 # -*- coding: utf-8 -*-
-from scrapy.spiders import Spider
+from web_news.misc.spiderredis import SpiderRedis
 from scrapy.http import Request
 from web_news.items import SpiderItem
 import re
 from urlparse import urljoin
-from web_news.misc.filter import Filter
 from scrapy.loader import ItemLoader
 
 
-class GzdisSpider(Spider):
+class GzdisSpider(SpiderRedis):
     name = 'gzdis'
-    website = '中共贵州省纪律检查委员会、贵州省监察厅'
+    website = u'中共贵州省纪律检查委员会、贵州省监察厅'
     allowed_domains = ['gzdis.gov.cn']
     start_urls = [
         'http://www.gzdis.gov.cn/xwzx/lzyw/',
@@ -19,12 +18,6 @@ class GzdisSpider(Spider):
         'http://www.gzdis.gov.cn/lzjy/qlkm/'
         'http://www.gzdis.gov.cn/wlft/wqft/'
     ]
-
-    @classmethod
-    def from_crawler(cls, crawler, *args, **kwargs):
-        spider = super(GzdisSpider, cls).from_crawler(crawler, *args, **kwargs)
-        spider.filter = Filter.from_crawler(spider.crawler, spider.name)
-        return spider
 
     def parse(self, response):
         script = response.xpath('//div[@class="lmdh"]/ul').extract()[0]

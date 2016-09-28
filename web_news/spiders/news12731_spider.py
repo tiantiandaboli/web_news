@@ -1,24 +1,17 @@
 # -*- coding: utf-8 -*-
-from scrapy.spiders import Spider
+from web_news.misc.spiderredis import SpiderRedis
 from scrapy.http import FormRequest, Request
 import json
 import time
 from web_news.items import SpiderItem
-from web_news.misc.filter import Filter
 from scrapy.loader import ItemLoader
 
 
-class NewsSpider(Spider):
+class NewsSpider(SpiderRedis):
     name = 'news12371'
     website = u'12371共产党员网'
     allowed_domains = ['12371.cn']
     start_urls = ['http://news.12371.cn/qwfb/']
-
-    @classmethod
-    def from_crawler(cls, crawler, *args, **kwargs):
-        spider = super(NewsSpider, cls).from_crawler(crawler, *args, **kwargs)
-        spider.filter = Filter.from_crawler(spider.crawler, spider.name)
-        return spider
 
     def parse(self, response):
         for sel in response.xpath('//div[@class="gcdywB4994_ind02"]/p'):
